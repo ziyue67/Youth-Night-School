@@ -32,7 +32,25 @@ exports.main = async (event, context) => {
   try {
     const conn = await getMysql();
     if (!conn) {
-      return { success: false, error: '数据库未配置' };
+      const db = cloud.database();
+      const logs = db.collection('sign_logs');
+
+      const exist = await logs.where({ _openid: openid, sign_date: today }).limit(1).get();
+      if (exist.data && exist.data.length > 0) {
+        return { success: false, error: '今日已签到' };
+      }
+
+      await logs.add({ data: { _openid: openid, sign_date: today, points, created_at: new Date() } });
+
+      const usersCol = db.collection('users');
+      const ures = await usersCol.where({ _openid: openid }).get();
+      if (ures.data && ures.data.length > 0) {
+        await usersCol.where({ _openid: openid }).update({ data: { points: db.command.inc(points) } });
+      } else {
+        await usersCol.add({ data: { _openid: openid, points } });
+      }
+
+      return { success: true, points, backend: 'cloud_db' };
     }
 
     // 检查今日是否已签到
@@ -53,13 +71,10 @@ exports.main = async (event, context) => {
 
     await conn.end();
 
-    // 同时更新云数据库用户积分（兼容旧逻辑）
     const db = cloud.database();
-    await db.collection('users').where({ _openid: openid }).update({
-      data: { points: db.command.inc(points) }
-    });
+    await db.collection('users').where({ _openid: openid }).update({ data: { points: db.command.inc(points) } });
 
-    return { success: true, points };
+    return { success: true, points, backend: 'mysql' };
   } catch (err) {
     console.error('签到失败:', err);
     return { success: false, error: err.message };

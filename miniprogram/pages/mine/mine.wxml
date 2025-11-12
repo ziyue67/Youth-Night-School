@@ -62,11 +62,7 @@
       <image class="arrow" src="../../images/icons/arrow.svg" mode="aspectFit"></image>
     </view>
     
-    <view class="menu-item" bindtap="gotoProfile">
-      <image class="menu-icon" src="../../images/icons/profile.png" mode="aspectFit"></image>
-      <text class="menu-text">个人资料</text>
-      <image class="arrow" src="../../images/icons/arrow.svg" mode="aspectFit"></image>
-    </view>
+    
     
     <view wx:if="{{!isLogin}}" class="menu-item" bindtap="gotoPhoneLogin">
       <image class="menu-icon" src="../../images/icons/phone.png" mode="aspectFit"></image>

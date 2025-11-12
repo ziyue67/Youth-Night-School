@@ -1,5 +1,9 @@
 {
   "dependencies": {
+    "serve": "^14.2.5",
     "wx-server-sdk": "^3.0.1"
+  },
+  "scripts": {
+    "start": "serve dist -l 3000"
   }
 }

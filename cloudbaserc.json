@@ -1,7 +1,61 @@
 {
-  "envId": "cloud1-9go506hg40673425",
+  "version": "2.0",
+  "envId": "prod-9gjwgqx19dcc8d53",
   "functionRoot": "./cloudfunctions",
-  "functions": [],
+  "functions": [
+    {
+      "name": "getPhoneNumber",
+      "timeout": 30,
+      "runtime": "Nodejs16.13",
+      "installDependency": true,
+      "envVariables": {
+        "MYSQL_HOST": "{{env.MYSQL_HOST}}",
+        "MYSQL_PORT": "{{env.MYSQL_PORT}}",
+        "MYSQL_USER": "{{env.MYSQL_USER}}",
+        "MYSQL_PASSWORD": "{{env.MYSQL_PASSWORD}}",
+        "MYSQL_DATABASE": "{{env.MYSQL_DATABASE}}"
+      }
+    },
+    {
+      "name": "migrateToMysql",
+      "timeout": 60,
+      "runtime": "Nodejs16.13",
+      "installDependency": true,
+      "envVariables": {
+        "MYSQL_HOST": "{{env.MYSQL_HOST}}",
+        "MYSQL_PORT": "{{env.MYSQL_PORT}}",
+        "MYSQL_USER": "{{env.MYSQL_USER}}",
+        "MYSQL_PASSWORD": "{{env.MYSQL_PASSWORD}}",
+        "MYSQL_DATABASE": "{{env.MYSQL_DATABASE}}"
+      }
+    },
+    {
+      "name": "dailySign",
+      "timeout": 30,
+      "installDependency": true,
+      "envVariables": {
+        "MYSQL_HOST": "{{env.MYSQL_HOST}}",
+        "MYSQL_PORT": "{{env.MYSQL_PORT}}",
+        "MYSQL_USER": "{{env.MYSQL_USER}}",
+        "MYSQL_PASSWORD": "{{env.MYSQL_PASSWORD}}",
+        "MYSQL_DATABASE": "{{env.MYSQL_DATABASE}}"
+      }
+    },
+    {
+      "name": "wechatLogin",
+      "timeout": 30,
+      "runtime": "Nodejs16.13",
+      "installDependency": true,
+      "envVariables": {
+        "MYSQL_HOST": "{{env.MYSQL_HOST}}",
+        "MYSQL_PORT": "{{env.MYSQL_PORT}}",
+        "MYSQL_USER": "{{env.MYSQL_USER}}",
+        "MYSQL_PASSWORD": "{{env.MYSQL_PASSWORD}}",
+        "MYSQL_DATABASE": "{{env.MYSQL_DATABASE}}",
+        "JWT_SECRET": "{{env.JWT_SECRET}}"
+      }
+    }
+  ],
   "ai": {
     "defaultAgent": "{{env.AI_DEFAULT_AGENT}}",
     "agents": {

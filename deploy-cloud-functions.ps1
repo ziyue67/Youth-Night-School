@@ -23,7 +23,8 @@ $cloudFunctions = @(
     "cloudfunctions\error-handler",
     "cloudfunctions\function-error-handler",
     "cloudfunctions\quickstartFunctions",
-    "cloudfunctions\dailySign"
+    "cloudfunctions\dailySign",
+    "cloudfunctions\migrateToMysql"
 )
 
 Write-Host "开始部署云函数..." -ForegroundColor Cyan
@@ -50,6 +51,17 @@ foreach ($function in $cloudFunctions) {
         
         Set-Location (Split-Path $function -Parent)
     }
+}
+
+# 回到项目根目录，更新云函数运行时配置（环境变量等）
+Set-Location (Split-Path $PSScriptRoot -Parent)
+Write-Host "更新云函数配置（环境变量、运行时等）..." -ForegroundColor Cyan
+cloudbase functions:config:update
+
+if ($LASTEXITCODE -eq 0) {
+    Write-Host "✓ 云函数配置更新完成" -ForegroundColor Green
+} else {
+    Write-Host "✗ 云函数配置更新失败，请检查 cloudbaserc.json 与 .env.local" -ForegroundColor Red
 }
 
 Write-Host "云函数部署完成！现在可以测试功能了。" -ForegroundColor Green
