@@ -1,0 +1,49 @@
+<view class="tasks-container">
+  <!-- 顶部标题 -->
+  <view class="header">
+    <text class="header-title">夜校任务</text>
+  </view>
+
+  <!-- 每日签到卡片 -->
+  <view class="sign-card">
+    <view class="sign-left">
+      <text class="sign-title">每日签到</text>
+      <text class="sign-desc">连续签到可获得更多积分</text>
+    </view>
+    <button 
+      class="sign-btn {{signedToday ? 'signed' : ''}}" 
+      bindtap="handleDailySign"
+      disabled="{{signedToday}}"
+    >
+      {{signedToday ? '已签到' : '签到'}}
+    </button>
+  </view>
+
+  <!-- 任务列表 -->
+  <view class="task-list">
+    <text class="list-title">今日任务</text>
+    <view wx:for="{{tasks}}" wx:key="id" class="task-item">
+      <view class="task-left">
+        <text class="task-name">{{item.name}}</text>
+        <text class="task-points">+{{item.points}}积分</text>
+      </view>
+      <view class="task-status {{item.completed ? 'completed' : 'pending'}}">
+        {{item.completed ? '已完成' : '去完成'}}
+      </view>
+    </view>
+  </view>
+
+  <!-- 签到记录 -->
+  <view class="sign-record">
+    <text class="record-title">签到记录</text>
+    <view wx:if="{{signRecord.length > 0}}" class="record-list">
+      <view wx:for="{{signRecord}}" wx:key="date" class="record-item">
+        <text class="record-date">{{item.date}}</text>
+        <text class="record-points">+{{item.points}}积分</text>
+      </view>
+    </view>
+    <view wx:else class="empty-record">
+      <text>暂无签到记录</text>
+    </view>
+  </view>
+</view>

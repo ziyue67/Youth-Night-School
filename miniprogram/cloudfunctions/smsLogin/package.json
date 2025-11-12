@@ -1,0 +1,9 @@
+{
+  "name": "sms-login",
+  "version": "1.0.0",
+  "description": "短信验证码登录云函数",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

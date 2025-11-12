@@ -1,0 +1,56 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/courses/index",
+    "pages/mine/mine",
+    "pages/news/index",
+    "pages/profile/index",
+    "pages/about/index",
+    "pages/example/index",
+    "pages/points/points",
+    "pages/tasks/tasks"
+  ],
+  "window": {
+    "backgroundColor": "#F6F6F6",
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#F6F6F6",
+    "navigationBarTitleText": "青春夜校",
+    "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "color": "#7A7E83",
+    "selectedColor": "#1E88E5",
+    "borderStyle": "black",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "iconPath": "images/icons/home.png",
+        "selectedIconPath": "images/icons/home-active.png",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/courses/index",
+        "iconPath": "images/icons/goods.png",
+        "selectedIconPath": "images/icons/goods-active.png",
+        "text": "课程"
+      },
+      {
+        "pagePath": "pages/news/index",
+        "iconPath": "images/icons/examples.png",
+        "selectedIconPath": "images/icons/examples-active.png",
+        "text": "动态"
+      },
+      {
+        "pagePath": "pages/mine/mine",
+        "iconPath": "images/icons/usercenter.png",
+        "selectedIconPath": "images/icons/usercenter-active.png",
+        "text": "我的"
+      }
+    ]
+  },
+  "sitemapLocation": "sitemap.json",
+  "style": "v2",
+  "lazyCodeLoading": "requiredComponents",
+  "cloud": true
+}

@@ -1,0 +1,29 @@
+<view class="container">
+  <view class="profile-section">
+    <image class="avatar" src="{{userInfo.avatarUrl || '../../images/icons/avatar.png'}}" mode="aspectFit"></image>
+    <text class="welcome-text">个人资料</text>
+  </view>
+
+  <view class="info-section">
+    <view class="info-item">
+      <text class="label">昵称</text>
+      <text class="value">{{userInfo.nickName || '青春夜校学员'}}</text>
+    </view>
+    
+    <view class="info-item">
+      <text class="label">手机号</text>
+      <text class="value">{{phoneNumber || '未绑定'}}</text>
+      <button 
+        wx:if="{{!phoneNumber}}" 
+        class="bind-btn"
+        open-type="getPhoneNumber"
+        bindgetphonenumber="handleGetPhoneNumber">
+        绑定手机号
+      </button>
+    </view>
+  </view>
+
+  <view class="tip-section" wx:if="{{!phoneNumber}}">
+    <text class="tip-text">绑定手机号后可享受更多个性化服务</text>
+  </view>
+</view>

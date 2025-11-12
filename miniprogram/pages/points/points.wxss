@@ -1,0 +1,119 @@
+/* 积分页面样式 */
+.points-container {
+  min-height: 100vh;
+  background: #f5f5f5;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 顶部标题 */
+.header {
+  background: #fff;
+  padding: 40rpx 0;
+  text-align: center;
+  border-bottom: 1rpx solid #eee;
+}
+
+.header-title {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+/* 积分展示 */
+.points-display {
+  background: #fff;
+  margin: 40rpx 30rpx;
+  padding: 60rpx 0;
+  border-radius: 24rpx;
+  text-align: center;
+  box-shadow: 0 4rpx 16rpx rgba(0,0,0,0.05);
+}
+
+.points-number {
+  display: block;
+  font-size: 52rpx; /* 26号字体 */
+  font-weight: bold;
+  color: #667eea;
+  margin-bottom: 10rpx;
+}
+
+.points-label {
+  font-size: 28rpx;
+  color: #999;
+}
+
+/* 积分记录 */
+.points-history {
+  flex: 1;
+  background: #fff;
+  margin: 0 30rpx 30rpx;
+  border-radius: 24rpx;
+  padding: 30rpx;
+  box-shadow: 0 4rpx 16rpx rgba(0,0,0,0.05);
+}
+
+.history-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20rpx;
+  display: block;
+}
+
+.history-list {
+  max-height: 600rpx;
+}
+
+.history-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24rpx 0;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.history-item:last-child {
+  border-bottom: none;
+}
+
+.history-left {
+  flex: 1;
+}
+
+.history-title {
+  font-size: 28rpx;
+  color: #333;
+  display: block;
+}
+
+.history-time {
+  font-size: 24rpx;
+  color: #999;
+  margin-top: 8rpx;
+  display: block;
+}
+
+.history-right {
+  text-align: right;
+}
+
+.history-points {
+  font-size: 32rpx;
+  font-weight: bold;
+}
+
+.history-points.positive {
+  color: #52c41a;
+}
+
+.history-points.negative {
+  color: #ff4757;
+}
+
+.empty-history {
+  text-align: center;
+  padding: 60rpx 0;
+  color: #999;
+  font-size: 28rpx;
+}

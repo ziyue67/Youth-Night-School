@@ -1,0 +1,9 @@
+{
+  "name": "migrate-to-cloudbase-sdk",
+  "description": "从 wx-server-sdk 迁移到 @cloudbase/node-sdk 的云函数示例",
+  "version": "1.0.0",
+  "main": "index.js",
+  "dependencies": {
+    "@cloudbase/node-sdk": "^3.3.7"
+  }
+}

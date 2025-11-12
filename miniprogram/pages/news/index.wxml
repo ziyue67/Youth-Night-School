@@ -1,0 +1,8 @@
+<view class="container">
+  <view class="news-list">
+    <view class="news-item" wx:for="{{newsList}}" wx:key="id">
+      <view class="news-title">{{item.title}}</view>
+      <view class="news-date">{{item.date}}</view>
+    </view>
+  </view>
+</view>

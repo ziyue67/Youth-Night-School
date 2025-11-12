@@ -1,0 +1,95 @@
+<!--index.wxml-->
+<view class="container">
+  <!-- 轮播图区 -->
+  <view class="swiper-container">
+    <swiper class="swiper" indicator-dots="true" indicator-active-color="#1E88E5" autoplay="true" interval="3000" duration="500" circular="true">
+      <swiper-item class="swiper-item" bindtap="onSwiperTap" data-index="0">
+        <image class="swiper-image" src="../../images/banner1.jpg" mode="aspectFill"></image>
+        <view class="swiper-mask">
+          <text class="swiper-text">朋辈赋能·五育并举</text>
+        </view>
+      </swiper-item>
+      <swiper-item class="swiper-item" bindtap="onSwiperTap" data-index="1">
+        <image class="swiper-image" src="../../images/banner2.jpg" mode="aspectFill"></image>
+        <view class="swiper-mask">
+          <text class="swiper-text">热门课程推荐</text>
+        </view>
+      </swiper-item>
+      <swiper-item class="swiper-item" bindtap="onSwiperTap" data-index="2">
+        <image class="swiper-image" src="../../images/banner3.jpg" mode="aspectFill"></image>
+        <view class="swiper-mask">
+          <text class="swiper-text">学长学姐带你成长</text>
+        </view>
+      </swiper-item>
+    </swiper>
+  </view>
+
+  <!-- 学院课程入口区 -->
+  <view class="college-section">
+    <view class="section-title">
+      <text class="title-text">学院导航</text>
+      <view class="title-line"></view>
+    </view>
+    <view class="college-grid">
+      <view class="college-card" bindtap="onCollegeTap" data-college="建筑工程学院">
+        <text class="college-name">建筑工程学院</text>
+      </view>
+      <view class="college-card" bindtap="onCollegeTap" data-college="智能制造与电梯学院">
+        <text class="college-name">智能制造与电梯学院</text>
+      </view>
+      <view class="college-card" bindtap="onCollegeTap" data-college="新能源工程与汽车学院">
+        <text class="college-name">新能源工程与汽车学院</text>
+      </view>
+      <view class="college-card" bindtap="onCollegeTap" data-college="信息工程与物联网学院">
+        <text class="college-name">信息工程与物联网学院</text>
+      </view>
+      <view class="college-card" bindtap="onCollegeTap" data-college="经济管理与电商学院">
+        <text class="college-name">经济管理与电商学院</text>
+      </view>
+      <view class="college-card" bindtap="onCollegeTap" data-college="旅游管理学院">
+        <text class="college-name">旅游管理学院</text>
+      </view>
+      <view class="college-card" bindtap="onCollegeTap" data-college="艺术设计与时尚创意学院">
+        <text class="college-name">艺术设计与时尚创意学院</text>
+      </view>
+      <view class="college-card" bindtap="onCollegeTap" data-college="社会发展与公共教育学院">
+        <text class="college-name">社会发展与公共教育学院</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 最新活动/课程推荐区 -->
+  <view class="activity-section">
+    <view class="section-header">
+      <text class="section-title-left">近期精彩</text>
+      <text class="section-more" bindtap="onMoreTap">更多→</text>
+    </view>
+    <scroll-view class="activity-scroll" scroll-x="true">
+      <view class="activity-card" wx:for="{{recentCourses}}" wx:key="id">
+        <image class="activity-image" src="{{item.image}}" mode="aspectFill"></image>
+        <view class="activity-info">
+          <text class="activity-name">{{item.name}}</text>
+          <text class="activity-time">{{item.time}}</text>
+          <text class="activity-location">{{item.location}}</text>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 项目简介区 -->
+  <view class="about-section">
+    <view class="section-title">
+      <text class="title-text">关于我们</text>
+    </view>
+    <text class="about-text">青春夜校是由高年级学长学姐主导的朋辈教育平台，以"五育并举"为核心，为大一新生提供学业、技能、成长全方位支持。</text>
+    <button class="about-button" bindtap="onAboutTap">了解更多</button>
+  </view>
+
+  <!-- 底部固定栏 -->
+  <view class="footer" style="position: fixed; left: -39rpx; top: 1412rpx">
+    <text class="footer-text">服务时间：每周一至五 19:00-21:00</text>
+    <text class="footer-text">联系我们：青春夜校运营团队</text>
+  </view>
+</view>
+
+<!-- 底部导航栏 -->

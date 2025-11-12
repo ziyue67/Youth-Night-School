@@ -1,0 +1,11 @@
+
+    {
+      "name": "login-function",
+      "description": "修复后的登录云函数，使用 @cloudbase/node-sdk",
+      "version": "1.0.0",
+      "main": "index.js",
+      "dependencies": {
+        "@cloudbase/node-sdk": "^3.3.7"
+      }
+    }
+  

@@ -1,0 +1,33 @@
+<view class="points-container">
+  <!-- 顶部标题 -->
+  <view class="header">
+    <text class="header-title">我的积分</text>
+  </view>
+
+  <!-- 积分展示 -->
+  <view class="points-display">
+    <text class="points-number">{{points}}</text>
+    <text class="points-label">积分</text>
+  </view>
+
+  <!-- 积分记录列表 -->
+  <view class="points-history">
+    <text class="history-title">积分记录</text>
+    <scroll-view scroll-y class="history-list">
+      <view wx:for="{{pointsHistory}}" wx:key="id" class="history-item">
+        <view class="history-left">
+          <text class="history-title">{{item.title}}</text>
+          <text class="history-time">{{item.time}}</text>
+        </view>
+        <view class="history-right">
+          <text class="history-points {{item.points > 0 ? 'positive' : 'negative'}}">
+            {{item.points > 0 ? '+' : ''}}{{item.points}}
+          </text>
+        </view>
+      </view>
+      <view wx:if="{{pointsHistory.length === 0}}" class="empty-history">
+        <text>暂无积分记录</text>
+      </view>
+    </scroll-view>
+  </view>
+</view>

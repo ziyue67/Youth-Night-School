@@ -1,0 +1,175 @@
+/* 夜校任务页面样式 */
+.tasks-container {
+  min-height: 100vh;
+  background: #f5f5f5;
+  padding: 20rpx;
+}
+
+/* 顶部标题 */
+.header {
+  background: #fff;
+  padding: 40rpx 0;
+  text-align: center;
+  border-radius: 24rpx;
+  margin-bottom: 20rpx;
+}
+
+.header-title {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+/* 每日签到卡片 */
+.sign-card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 24rpx;
+  padding: 40rpx;
+  margin-bottom: 20rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #fff;
+}
+
+.sign-left {
+  flex: 1;
+}
+
+.sign-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 8rpx;
+}
+
+.sign-desc {
+  font-size: 24rpx;
+  opacity: 0.9;
+}
+
+.sign-btn {
+  background: rgba(255, 255, 255, 0.2);
+  border: 2rpx solid rgba(255, 255, 255, 0.4);
+  color: #fff;
+  border-radius: 40rpx;
+  padding: 20rpx 40rpx;
+  font-size: 28rpx;
+  font-weight: bold;
+}
+
+.sign-btn.signed {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* 任务列表 */
+.task-list {
+  background: #fff;
+  border-radius: 24rpx;
+  padding: 30rpx;
+  margin-bottom: 20rpx;
+}
+
+.list-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20rpx;
+  display: block;
+}
+
+.task-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24rpx 0;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.task-item:last-child {
+  border-bottom: none;
+}
+
+.task-left {
+  flex: 1;
+}
+
+.task-name {
+  font-size: 28rpx;
+  color: #333;
+  display: block;
+  margin-bottom: 8rpx;
+}
+
+.task-points {
+  font-size: 24rpx;
+  color: #667eea;
+}
+
+.task-status {
+  font-size: 24rpx;
+  padding: 8rpx 16rpx;
+  border-radius: 20rpx;
+  min-width: 100rpx;
+  text-align: center;
+}
+
+.task-status.completed {
+  background: #f0f9ff;
+  color: #52c41a;
+}
+
+.task-status.pending {
+  background: #f0f0f0;
+  color: #666;
+}
+
+/* 签到记录 */
+.sign-record {
+  background: #fff;
+  border-radius: 24rpx;
+  padding: 30rpx;
+}
+
+.record-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20rpx;
+  display: block;
+}
+
+.record-list {
+  max-height: 400rpx;
+}
+
+.record-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20rpx 0;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.record-item:last-child {
+  border-bottom: none;
+}
+
+.record-date {
+  font-size: 28rpx;
+  color: #333;
+}
+
+.record-points {
+  font-size: 28rpx;
+  color: #667eea;
+  font-weight: bold;
+}
+
+.empty-record {
+  text-align: center;
+  padding: 60rpx 0;
+  color: #999;
+  font-size: 28rpx;
+}

@@ -1,0 +1,32 @@
+<view class="container">
+  <view class="about-header">
+    <image class="logo" src="../../images/icons/logo.png" mode="aspectFit"></image>
+    <text class="title">关于青春夜校</text>
+  </view>
+  
+  <view class="content-section">
+    <view class="section-title">平台介绍</view>
+    <view class="content-text">
+      青春夜校是由高年级学长学姐主导的朋辈教育平台，以"五育并举"为核心，为大一新生提供学业、技能、成长全方位支持。
+    </view>
+  </view>
+  
+  <view class="content-section">
+    <view class="section-title">服务宗旨</view>
+    <view class="content-text">
+      通过朋辈赋能，帮助新生快速适应大学生活，培养综合素质，实现全面发展。
+    </view>
+  </view>
+  
+  <view class="contact-section">
+    <view class="section-title">联系我们</view>
+    <view class="contact-item">
+      <text class="label">运营团队：</text>
+      <text class="value">青春夜校运营团队</text>
+    </view>
+    <view class="contact-item">
+      <text class="label">服务时间：</text>
+      <text class="value">每周一至五 19:00-21:00</text>
+    </view>
+  </view>
+</view>

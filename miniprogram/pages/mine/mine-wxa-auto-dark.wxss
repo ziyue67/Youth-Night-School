@@ -1,0 +1,55 @@
+/* 
+此文件为开发者工具生成，生成时间: 2025/11/11上午2:28:56
+使用方法：
+在 mine.wxss 文件末尾引入样式
+```
+@import "./mine-wxa-auto-dark.wxss";
+```
+ */
+
+@media (prefers-color-scheme: dark) {
+    .container {
+        background-color: rgb(24, 24, 24);
+    }
+
+    .user-section {
+        background: rgb(0, 0, 0);
+        color: rgb(17, 17, 17);
+    }
+
+    .login-btn {
+        background: rgba(17, 17, 17, 0.2);
+    }
+
+    .stats-section {
+        background: rgb(17, 17, 17);
+    }
+
+    .stat-number {
+        color: rgb(87, 114, 220);
+    }
+
+    .stat-label {
+        color: rgb(149, 149, 149);
+    }
+
+    .menu-section {
+        background: rgb(17, 17, 17);
+    }
+
+    .menu-item {
+        border-bottom: rgb(0, 0, 0);
+    }
+
+    .menu-text {
+        color: rgb(209, 209, 209);
+    }
+
+    .logout {
+        color: rgb(212, 10, 56);
+    }
+
+    .settings-section {
+        background: rgb(17, 17, 17);
+    }
+}
