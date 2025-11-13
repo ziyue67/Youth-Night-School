@@ -16,14 +16,19 @@ Page({
   // 加载积分数据
   async loadPointsData() {
     try {
-      // 从本地存储获取当前积分
+      const res = await wx.cloud.callFunction({ name: 'dailySign', data: { action: 'status' } });
+      if (res.result && res.result.success) {
+        const points = res.result.points || 0;
+        const info = wx.getStorageSync('userInfo') || {};
+        info.points = points;
+        wx.setStorageSync('userInfo', info);
+        const history = (res.result.signRecord || []).map(i => ({ date: i.date, points: i.points }));
+        this.setData({ points, pointsHistory: history });
+        return;
+      }
       const userInfo = wx.getStorageSync('userInfo') || {};
       const points = userInfo.points || 0;
-
-      this.setData({
-        points: points,
-        pointsHistory: []
-      });
+      this.setData({ points, pointsHistory: [] });
 
     } catch (error) {
       console.error('加载积分数据失败:', error);

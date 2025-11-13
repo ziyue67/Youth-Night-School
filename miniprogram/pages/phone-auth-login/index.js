@@ -28,6 +28,10 @@ Page({
         const phoneNumber = phoneRes.result && (phoneRes.result.phoneNumber || (phoneRes.result.data && phoneRes.result.data.phoneNumber));
         wx.setStorageSync('token', token);
         wx.setStorageSync('phoneNumber', phoneNumber);
+        const phoneUserInfo = { phoneNumber, nickName: '手机号用户', avatarUrl: '' };
+        wx.setStorageSync('phoneUserInfo', phoneUserInfo);
+        const merged = wx.getStorageSync('userInfo') || {};
+        wx.setStorageSync('userInfo', { ...merged, phoneNumber });
         wx.showToast({ title: '登录成功', icon: 'success' });
         setTimeout(() => {
           wx.switchTab({ url: '/pages/mine/mine' });

@@ -15,11 +15,13 @@ Page({
   onLoad() {
     this.checkDailySignStatus();
     this.loadSignRecord();
+    this.loadStatus();
   },
 
   onShow() {
     this.checkDailySignStatus();
     this.loadSignRecord();
+    this.loadStatus();
   },
 
   // 检查今日签到状态
@@ -93,11 +95,17 @@ Page({
         // 通知积分页面刷新
         const pages = getCurrentPages();
         const pointsPage = pages.find(p => p.route === 'pages/points/points');
-        if (pointsPage) {
-          pointsPage.loadPointsData();
-        }
+        if (pointsPage) { pointsPage.loadPointsData(); }
+        this.loadStatus();
 
       } else {
+        if (res.result && res.result.error === '今日已签到') {
+          const today = new Date().toISOString().slice(0, 10);
+          wx.setStorageSync('lastSignDate', today);
+          this.setData({ signedToday: true });
+          wx.showToast({ title: '今日已签到', icon: 'none' });
+          return;
+        }
         if (res.result && res.result.error === '数据库未配置') {
           wx.showModal({
             title: '提示',
@@ -112,11 +120,30 @@ Page({
 
     } catch (error) {
       wx.hideLoading();
-      wx.showToast({
-        title: error.message || '签到失败',
-        icon: 'none'
-      });
-      console.error('签到失败:', error);
+      if (String(error && error.message).includes('今日已签到')) {
+        const today = new Date().toISOString().slice(0, 10);
+        wx.setStorageSync('lastSignDate', today);
+        this.setData({ signedToday: true });
+        wx.showToast({ title: '今日已签到', icon: 'none' });
+      } else {
+        wx.showToast({ title: error.message || '签到失败', icon: 'none' });
+        console.error('签到失败:', error);
+      }
     }
+  },
+  async loadStatus() {
+    try {
+      const res = await wx.cloud.callFunction({ name: 'dailySign', data: { action: 'status' } });
+      if (res.result && res.result.success) {
+        const today = new Date().toISOString().slice(0, 10);
+        const record = (res.result.signRecord || []).map(i => ({ date: i.date, points: i.points }));
+        wx.setStorageSync('lastSignDate', res.result.signedToday ? today : '');
+        wx.setStorageSync('signRecord', record);
+        const info = wx.getStorageSync('userInfo') || {};
+        info.points = res.result.points || 0;
+        wx.setStorageSync('userInfo', info);
+        this.setData({ signedToday: !!res.result.signedToday, signRecord: record.slice(-7) });
+      }
+    } catch {}
   }
 });

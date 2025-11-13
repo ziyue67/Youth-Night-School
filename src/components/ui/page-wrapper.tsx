@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import { $w as base$W, createPageApi } from "@/lib/weda-client";
-import { _WEDA_CLOUD_SDK as WEDA_CLOUD_SDK } from "@cloudbase/weda-client";
+import { _WEDA_CLOUD_SDK as WEDA_CLOUD_SDK } from "@/lib/weda-shim";
 import querystring from "query-string";
 const { createDataset, EXTRA_API } = WEDA_CLOUD_SDK;
 

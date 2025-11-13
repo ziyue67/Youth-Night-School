@@ -19,39 +19,32 @@ Page({
 
   // 检查登录状态（支持多种登录方式）
   checkLoginStatus() {
-    // 检查微信登录
     const wxUserInfo = wx.getStorageSync('userInfo');
     const wxToken = wx.getStorageSync('token');
-    
-    // 检查短信登录
     const smsUserInfo = wx.getStorageSync('smsUserInfo');
-    
-    // 检查手机号授权登录
     const phoneUserInfo = wx.getStorageSync('phoneUserInfo');
-    
-    let userInfo = null;
-    let isLogin = false;
-    
-    if (smsUserInfo) {
-      userInfo = smsUserInfo;
-      isLogin = true;
-    } else if (phoneUserInfo) {
-      userInfo = phoneUserInfo;
-      isLogin = true;
-    } else if (wxUserInfo && wxToken) {
-      userInfo = wxUserInfo;
-      isLogin = true;
+    const openid = wx.getStorageSync('openid');
+
+    let userInfo = smsUserInfo || phoneUserInfo || wxUserInfo || null;
+    let isLogin = !!(userInfo || openid || wxToken);
+
+    if (!userInfo && (openid || wxToken)) {
+      userInfo = {
+        openid: openid || wxToken,
+        nickName: '微信用户',
+        avatarUrl: '',
+        points: (wxUserInfo && wxUserInfo.points) || 0,
+      };
+      try {
+        wx.setStorageSync('userInfo', userInfo);
+      } catch (e) {}
     }
 
     // 检查今日签到状态
     const today = new Date().toISOString().slice(0, 10);
     const lastSignDate = wx.getStorageSync('lastSignDate');
 
-    this.setData({ 
-      isLogin, 
-      userInfo,
-      signedToday: lastSignDate === today
-    });
+    this.setData({ isLogin, userInfo, signedToday: lastSignDate === today });
     
     if (isLogin) {
       this.loadUserData();

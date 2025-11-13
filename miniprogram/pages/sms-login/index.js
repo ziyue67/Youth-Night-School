@@ -86,8 +86,10 @@ Page({
       });
 
       const userInfo = await auth.getUserInfo();
-      
       wx.setStorageSync('smsUserInfo', userInfo);
+      const merged = wx.getStorageSync('userInfo') || {};
+      const phoneNumber = (userInfo && userInfo.phone && userInfo.phone.number) || this.data.phoneNumber;
+      wx.setStorageSync('userInfo', { ...merged, phoneNumber });
       wx.showToast({ title: '登录成功', icon: 'success' });
       
       setTimeout(() => {

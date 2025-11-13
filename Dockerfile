@@ -1,6 +1,7 @@
 # --- 阶段 1: 构建阶段 ---
 # 使用一个包含 Node.js 和 npm/yarn 的完整镜像来构建项目
-FROM node:16 AS build-stage
+FROM node:18 AS build-stage
+
 
 WORKDIR /app
 
@@ -17,7 +18,7 @@ RUN npm run build
 
 # --- 阶段 2: 运行阶段 ---
 # 使用轻量的 alpine 镜像来运行最终的应用
-FROM node:16-alpine AS production-stage
+FROM node:18-alpine AS production-stage
 
 # 同样，先解决证书问题
 RUN apk add --no-cache ca-certificates

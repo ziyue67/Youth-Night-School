@@ -2,11 +2,11 @@
 import envConfig from "../configs/env";
 import {
   createWebApp,
-  _ACTIONS_KEY as ACTIONS_KEY,
-  _ROUTER_KEY as ROUTER_KEY,
+  ACTIONS_KEY,
+  ROUTER_KEY,
   actionSdk as sdk,
   _WEDA_CLOUD_SDK,
-} from "@cloudbase/weda-client";
+} from "./weda-shim";
 
 const { initTcb, setConfig } = _WEDA_CLOUD_SDK;
 
@@ -86,7 +86,7 @@ function _injectApp2Runtime(globalAPI, hard = false) {
 
   runtime.$w = new Proxy($w || globalAPI?.__internal__?.$w || {}, {
     get(_, prop: string) {
-      const $page = runtime.app?.__internal__?.activePage || runtime.$page;
+      const $page = (runtime.app as any)?.__internal__?.activePage || runtime.$page;
 
       if ($page?.__internal__?.$w?.[prop]) {
         return $page.__internal__.$w[prop];
