@@ -22,15 +22,50 @@
     "miniprogram": {
       "list": [
         {
-          "name": "我的页面",
-          "pathName": "pages/mine/mine",
+          "name": "我的积分pages/about/index",
+          "pathName": "pages/points/points",
           "query": "",
           "scene": null,
           "launchMode": "default"
         },
         {
-          "name": "课程",
+          "name": "我的pages/mine/mine",
+          "pathName": "pages/mine/mine",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "课程pages/courses/index",
           "pathName": "pages/courses/index",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "动态pages/news/index",
+          "pathName": "pages/news/index",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "夜校任务pages/tasks/tasks",
+          "pathName": "pages/tasks/tasks",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "pages/example/index",
+          "pathName": "pages/example/index",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "pages/profile/index",
+          "pathName": "pages/profile/index",
           "query": "",
           "launchMode": "default",
           "scene": null

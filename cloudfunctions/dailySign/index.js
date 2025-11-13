@@ -6,12 +6,12 @@ cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV });
 
 async function getMysql() {
   const host = process.env.MYSQL_HOST;
-  const port = process.env.MYSQL_PORT ? Number(process.env.MYSQL_PORT) : 3306;
+  const port = process.env.MYSQL_PORT ? Number(process.env.MYSQL_PORT) : 21639;
   const user = process.env.MYSQL_USER;
   const password = process.env.MYSQL_PASSWORD;
   const database = process.env.MYSQL_DATABASE;
-  if (!host || !user || !password || !database) return null;
-  const conn = await mysql.createConnection({ host, port, user, password, database });
+  if (!host || !user || !password || !database) throw new Error('数据库未配置');
+  const conn = await mysql.createConnection({ host, port, user, password, database, dateStrings: true });
   await conn.execute(
     'CREATE TABLE IF NOT EXISTS users (id INT PRIMARY KEY AUTO_INCREMENT, openid VARCHAR(64) UNIQUE, points INT DEFAULT 0, nick_name VARCHAR(64), phone VARCHAR(32), created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)'
   );
@@ -31,22 +31,6 @@ exports.main = async (event, context) => {
   if (action === 'status') {
     try {
       const conn = await getMysql();
-      if (!conn) {
-        const db = cloud.database();
-        const usersCol = db.collection('users');
-        const ures = await usersCol.where({ _openid: openid }).get();
-        const points = ures.data && ures.data[0] ? (ures.data[0].points || 0) : 0;
-        const logs = db.collection('sign_logs');
-        const list = await logs.where({ _openid: openid }).orderBy('created_at', 'desc').limit(30).get();
-        const signed = await logs.where({ _openid: openid, sign_date: today }).limit(1).get();
-        return {
-          success: true,
-          points,
-          signedToday: signed.data && signed.data.length > 0,
-          signRecord: (list.data || []).map(i => ({ date: i.sign_date, points: i.points })),
-          backend: 'cloud_db'
-        };
-      }
       const [urows] = await conn.execute('SELECT id, points FROM users WHERE openid=?', [openid]);
       let points = 0;
       if (!urows.length) {
@@ -63,7 +47,7 @@ exports.main = async (event, context) => {
         success: true,
         points,
         signedToday: signedRows.length > 0,
-        signRecord: logs.map(r => ({ date: r.date, points: r.points })),
+        signRecord: logs.map(r => ({ date: typeof r.date === 'string' ? r.date : new Date(r.date).toISOString().slice(0, 10), points: r.points })),
         backend: 'mysql'
       };
     } catch (err) {
@@ -76,28 +60,6 @@ exports.main = async (event, context) => {
 
   try {
     const conn = await getMysql();
-    if (!conn) {
-      const db = cloud.database();
-      const logs = db.collection('sign_logs');
-
-      const exist = await logs.where({ _openid: openid, sign_date: today }).limit(1).get();
-      if (exist.data && exist.data.length > 0) {
-        return { success: false, error: '今日已签到' };
-      }
-
-      await logs.add({ data: { _openid: openid, sign_date: today, points, created_at: new Date() } });
-
-      const usersCol = db.collection('users');
-      const ures = await usersCol.where({ _openid: openid }).get();
-      if (ures.data && ures.data.length > 0) {
-        await usersCol.where({ _openid: openid }).update({ data: { points: db.command.inc(points) } });
-      } else {
-        await usersCol.add({ data: { _openid: openid, points } });
-      }
-
-      return { success: true, points, backend: 'cloud_db' };
-    }
-
     const [urows] = await conn.execute('SELECT id, points FROM users WHERE openid=?', [openid]);
     if (!urows.length) {
       await conn.execute('INSERT INTO users (openid, points) VALUES (?,?)', [openid, 0]);
@@ -119,10 +81,6 @@ exports.main = async (event, context) => {
     );
 
     await conn.end();
-
-    const db = cloud.database();
-    await db.collection('users').where({ _openid: openid }).update({ data: { points: db.command.inc(points) } });
-
     return { success: true, points, backend: 'mysql' };
   } catch (err) {
     console.error('签到失败:', err);

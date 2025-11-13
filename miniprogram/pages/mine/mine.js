@@ -202,6 +202,26 @@ Page({
 
   // 加载用户数据
   async loadUserData() {
-    // 原有的数据加载逻辑...
+    try {
+      const res = await wx.cloud.callFunction({ name: 'dailySign', data: { action: 'status', openid: wx.getStorageSync('openid') } });
+      if (res.result && res.result.success) {
+        const today = new Date().toISOString().slice(0, 10);
+        const points = res.result.points || 0;
+        const signedToday = !!res.result.signedToday;
+        const signRecord = (res.result.signRecord || []).map(i => ({ date: i.date, points: i.points }));
+        const info = wx.getStorageSync('userInfo') || {};
+        info.points = points;
+        wx.setStorageSync('userInfo', info);
+        wx.setStorageSync('lastSignDate', signedToday ? today : '');
+        wx.setStorageSync('signRecord', signRecord);
+        this.setData({ points, signRecord, signedToday });
+        return;
+      }
+    } catch (e) {}
+    const info = wx.getStorageSync('userInfo') || {};
+    const record = wx.getStorageSync('signRecord') || [];
+    const today = new Date().toISOString().slice(0, 10);
+    const lastSignDate = wx.getStorageSync('lastSignDate');
+    this.setData({ points: info.points || 0, signRecord: record, signedToday: lastSignDate === today });
   }
 });

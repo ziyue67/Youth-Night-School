@@ -1,0 +1,67 @@
+/* 
+此文件为开发者工具生成，生成时间: 2025/11/14上午3:45:44
+使用方法：
+在 points.wxss 文件末尾引入样式
+```
+@import "./points-wxa-auto-dark.wxss";
+```
+ */
+
+@media (prefers-color-scheme: dark) {
+    .points-container {
+        background: rgb(24, 24, 24);
+    }
+
+    .header {
+        background: rgb(17, 17, 17);
+        border-bottom: rgb(0, 0, 0);
+    }
+
+    .header-title {
+        color: rgb(209, 209, 209);
+    }
+
+    .points-display {
+        background: rgb(17, 17, 17);
+    }
+
+    .points-number {
+        color: rgb(87, 114, 220);
+    }
+
+    .points-label {
+        color: rgb(99, 99, 99);
+    }
+
+    .points-history {
+        background: rgb(17, 17, 17);
+    }
+
+    .history-title {
+        color: rgb(209, 209, 209);
+    }
+
+    .history-item {
+        border-bottom: rgb(0, 0, 0);
+    }
+
+    .history-title {
+        color: rgb(209, 209, 209);
+    }
+
+    .history-time {
+        color: rgb(99, 99, 99);
+    }
+
+    .history-points.positive {
+        color: rgb(0, 99, 0);
+    }
+
+    .history-points.negative {
+        color: rgb(212, 10, 56);
+    }
+
+    .empty-history {
+        color: rgb(99, 99, 99);
+    }
+}

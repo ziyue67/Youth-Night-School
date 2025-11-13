@@ -16,7 +16,8 @@ Page({
   // 加载积分数据
   async loadPointsData() {
     try {
-      const res = await wx.cloud.callFunction({ name: 'dailySign', data: { action: 'status' } });
+      const openid = wx.getStorageSync('openid');
+      const res = await wx.cloud.callFunction({ name: 'dailySign', data: { action: 'status', openid } });
       if (res.result && res.result.success) {
         const points = res.result.points || 0;
         const info = wx.getStorageSync('userInfo') || {};

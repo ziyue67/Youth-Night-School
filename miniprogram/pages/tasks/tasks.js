@@ -56,7 +56,8 @@ Page({
         name: 'dailySign',
         data: {
           action: 'sign',
-          points: 10
+          points: 10,
+          openid: wx.getStorageSync('openid')
         }
       });
 
@@ -133,7 +134,7 @@ Page({
   },
   async loadStatus() {
     try {
-      const res = await wx.cloud.callFunction({ name: 'dailySign', data: { action: 'status' } });
+      const res = await wx.cloud.callFunction({ name: 'dailySign', data: { action: 'status', openid: wx.getStorageSync('openid') } });
       if (res.result && res.result.success) {
         const today = new Date().toISOString().slice(0, 10);
         const record = (res.result.signRecord || []).map(i => ({ date: i.date, points: i.points }));

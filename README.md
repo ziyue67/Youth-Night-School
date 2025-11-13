@@ -1,82 +1,64 @@
-# Weix2 小程序与云函数项目
+# 青春夜校小程序（Youth-Night-School）
 
-一个包含微信小程序、云函数（CloudBase）、云托管与 MySQL 的全栈项目。支持将 CloudBase 数据迁移到云托管 MySQL，并提供 Docker 生产镜像构建。
+一个包含前端小程序与云函数的示例项目，支持每日签到与积分记录，使用外网 MySQL 作为唯一数据源。
 
-## 功能概览
-- 小程序登录与用户资料更新（`cloudfunctions/wechatLogin`）
-- 获取手机号并落库（`cloudfunctions/getPhoneNumber`）
-- 每日签到与积分（`cloudfunctions/dailySign`）
-- 数据迁移到云托管 MySQL（`cloudfunctions/migrateToMysql`）
-- 前端打包与静态托管（Docker 多阶段构建）
+## 功能
 
-## 环境要求
-- Node.js 16+
-- CloudBase CLI：`npm i -g @cloudbase/cli`
-- 腾讯云开发环境（`envId`：见 `cloudbaserc.json`）
-- 云托管 MySQL（建议同 VPC 内网访问）
+- 我的积分：展示总积分与签到记录
+- 夜校任务：执行每日签到，刷新积分与记录
+- 云函数 `dailySign`：仅访问外网 MySQL，支持 `status` 与 `sign` 两个动作
 
-## 环境变量配置
-在项目根目录创建并填写 `.env.local`（已忽略提交）：
+## 目录结构
 
-```
-MYSQL_HOST=your.mysql.host
-MYSQL_PORT=3306
-MYSQL_USER=app_user
-MYSQL_PASSWORD=your_password
-MYSQL_DATABASE=weix2
-JWT_SECRET=your_jwt_secret
-```
+- `miniprogram/pages/points/`：积分页面
+- `miniprogram/pages/tasks/`：夜校任务页面（签到）
+- `miniprogram/pages/mine/`：我的页面（总积分、签到数）
+- `cloudfunctions/dailySign/`：每日签到云函数（Node.js）
 
-`cloudbaserc.json` 已将上述变量注入到相关云函数的运行环境。
+## 部署（SCF 本地打包 ZIP 路线）
 
-## 云函数部署与配置
-1. 登录：`cloudbase login`
-2. 单函数部署（示例）：
-   - `cloudbase fn deploy wechatLogin`
-   - `cloudbase fn deploy getPhoneNumber`
-   - `cloudbase fn deploy dailySign`
-   - `cloudbase fn deploy migrateToMysql`
-3. 更新配置（环境变量等）：
-   - `cloudbase fn config update wechatLogin`
-   - `cloudbase fn config update getPhoneNumber`
-   - `cloudbase fn config update dailySign`
-   - `cloudbase fn config update migrateToMysql`
+1. 本地安装依赖
+   - 在 `cloudfunctions/dailySign` 目录执行：
+     - `npm config set registry https://registry.npmmirror.com`
+     - `npm install --production`
+   - 运行时为 Node.js 10.15 时使用 `mysql2@2.3.3`；如能升级到 Node.js 16，可改为 `^3.x`。
 
-如为正式环境（prod），首次需在控制台创建任意云函数完成命名空间初始化。
+2. 打包上传
+   - 打包为 `dailySign.zip`，包含：`index.js`、`package.json`、`package-lock.json`、`node_modules/`
+   - 在腾讯云 SCF 控制台选择函数 `dailySign`，运行环境 `Nodejs10.15` 或更高版本，上传 ZIP 并部署。
 
-## 数据迁移到 MySQL
-- 触发迁移：
-  - `cloudbase fn invoke migrateToMysql --params "{}" -e <envId>`
-- 迁移内容：`users` 与 `sign_logs` 集合分别写入 MySQL 表（带唯一约束）。
+3. 配置环境变量（外网 MySQL）
+   - `MYSQL_HOST`：如 `sh-cynosdbmysql-grp-xxxx.sql.tencentcdb.com`
+   - `MYSQL_PORT`：如 `21639`
+   - `MYSQL_USER`：数据库账号（建议非 root）
+   - `MYSQL_PASSWORD`：数据库密码
+   - `MYSQL_DATABASE`：库名，如 `weix2`
 
-## Docker 生产镜像
-项目根已包含 `Dockerfile`，多阶段构建，使用 `serve` 托管打包后的 `dist`：
+4. 验证
+   - SCF 测试 `{"action":"status","openid":"<你的openid>"}`，应返回 `backend: "mysql"`、`points` 与 `signRecord`。
+   - 小程序“我的积分/夜校任务”页面显示与数据库一致的积分和日期。
 
-```
-docker build -t weix2:prod .
-docker run -p 3000:3000 weix2:prod
-```
+## 关键实现说明
+
+- 云函数只使用 MySQL：缺失 `MYSQL_*` 变量时直接报错；不再回退到云开发数据库。
+- 兼容 `wx-server-sdk`：函数内部懒加载，缺失时从 `event.openid` 读取；前端已在调用时传入 `openid`。
+- 日期一致性：MySQL 连接启用 `dateStrings: true`，并将签到记录日期统一输出为 `YYYY-MM-DD`。
 
 ## 推送到 GitHub
-如果本地已配置 GitHub 账号，推荐使用以下命令推送到公开仓库：
 
-```
-git init
-git add .
-git commit -m "chore: initial commit"
-git branch -M main
-# 先在 GitHub Web 上创建公有仓库（例如 weix2），然后：
-git remote add origin https://github.com/<你的用户名>/weix2.git
-git push -u origin main
-```
+1. 初始化并提交：
+   - 在项目根目录执行：
+     - `git init`
+     - `git add .`
+     - `git commit -m "init: Youth Night School with MySQL-based dailySign"`
 
-若安装了 GitHub CLI：
+2. 创建远程仓库：
+   - 在 GitHub 新建仓库，例如 `Youth-Night-School`（私有或公开均可）。
 
-```
-gh repo create weix2 --public --source . --remote origin --push
-```
+3. 绑定并推送：
+   - `git branch -M main`
+   - `git remote add origin https://github.com/<你的用户名>/Youth-Night-School.git`
+   - `git push -u origin main`
 
-## 安全说明
-- `.env.local` 已加入 `.gitignore`，避免泄露数据库凭据与密钥。
-- 生产环境建议将云函数与 MySQL 置于同一 VPC 进行内网访问，并使用最小权限账号（仅授予 SELECT/INSERT/UPDATE/DELETE/CREATE/ALTER/INDEX）。
+> 安全提示：不要将数据库密码等敏感信息写入代码或提交到仓库。云函数使用环境变量读取敏感信息。
 

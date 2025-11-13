@@ -117,3 +117,5 @@
   color: #999;
   font-size: 28rpx;
 }
+
+@import 'points-wxa-auto-dark.wxss'

@@ -14,10 +14,10 @@
   <view class="points-history">
     <text class="history-title">积分记录</text>
     <scroll-view scroll-y class="history-list">
-      <view wx:for="{{pointsHistory}}" wx:key="id" class="history-item">
+      <view wx:for="{{pointsHistory}}" wx:key="date" class="history-item">
         <view class="history-left">
-          <text class="history-title">{{item.title}}</text>
-          <text class="history-time">{{item.time}}</text>
+          <text class="history-title">{{item.date}}</text>
+          <text class="history-time"></text>
         </view>
         <view class="history-right">
           <text class="history-points {{item.points > 0 ? 'positive' : 'negative'}}">

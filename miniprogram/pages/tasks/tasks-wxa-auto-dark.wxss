@@ -1,0 +1,91 @@
+/* 
+此文件为开发者工具生成，生成时间: 2025/11/14上午3:45:44
+使用方法：
+在 tasks.wxss 文件末尾引入样式
+```
+@import "./tasks-wxa-auto-dark.wxss";
+```
+ */
+
+@media (prefers-color-scheme: dark) {
+    .tasks-container {
+        background: rgb(24, 24, 24);
+    }
+
+    .header {
+        background: rgb(17, 17, 17);
+    }
+
+    .header-title {
+        color: rgb(209, 209, 209);
+    }
+
+    .sign-card {
+        background: rgb(0, 0, 0);
+        color: rgb(17, 17, 17);
+    }
+
+    .sign-btn {
+        background: rgba(17, 17, 17, 0.2);
+        color: rgb(17, 17, 17);
+    }
+
+    .sign-btn.signed {
+        background: rgba(17, 17, 17, 0.1);
+        color: rgba(17, 17, 17, 0.6);
+    }
+
+    .task-list {
+        background: rgb(17, 17, 17);
+    }
+
+    .list-title {
+        color: rgb(209, 209, 209);
+    }
+
+    .task-item {
+        border-bottom: rgb(0, 0, 0);
+    }
+
+    .task-name {
+        color: rgb(209, 209, 209);
+    }
+
+    .task-points {
+        color: rgb(87, 114, 220);
+    }
+
+    .task-status.completed {
+        background: rgb(17, 24, 28);
+        color: rgb(0, 99, 0);
+    }
+
+    .task-status.pending {
+        background: rgb(28, 28, 28);
+        color: rgb(149, 149, 149);
+    }
+
+    .sign-record {
+        background: rgb(17, 17, 17);
+    }
+
+    .record-title {
+        color: rgb(209, 209, 209);
+    }
+
+    .record-item {
+        border-bottom: rgb(0, 0, 0);
+    }
+
+    .record-date {
+        color: rgb(209, 209, 209);
+    }
+
+    .record-points {
+        color: rgb(87, 114, 220);
+    }
+
+    .empty-record {
+        color: rgb(99, 99, 99);
+    }
+}

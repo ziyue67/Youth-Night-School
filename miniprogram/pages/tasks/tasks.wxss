@@ -173,3 +173,5 @@
   color: #999;
   font-size: 28rpx;
 }
+
+@import 'tasks-wxa-auto-dark.wxss'
