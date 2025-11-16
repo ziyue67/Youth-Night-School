@@ -79,6 +79,28 @@
   background-color: white;
 }
 
+/* 月份滑块 */
+.month-tabs {
+  white-space: nowrap;
+  margin: 10rpx 0 20rpx;
+}
+.month-tab {
+  display: inline-block;
+  padding: 12rpx 20rpx;
+  margin-right: 12rpx;
+  border: 1rpx solid #e0e0e0;
+  border-radius: 24rpx;
+  font-size: 24rpx;
+  color: #666;
+  background-color: #f9f9f9;
+}
+.month-tab.active {
+  border-color: #4CAF50;
+  color: #4CAF50;
+  background-color: #e8f5e8;
+}
+.month-empty { color: #999; font-size: 24rpx; }
+
 /* 搜索框 */
 .search-box {
   display: flex;

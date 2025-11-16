@@ -17,7 +17,7 @@ async function getMysql() {
   );
   // 签到记录表
   await conn.execute(
-    'CREATE TABLE IF NOT EXISTS sign_logs (id INT PRIMARY KEY AUTO_INCREMENT, openid VARCHAR(64) NOT NULL, user_id INT, sign_date DATE NOT NULL, points INT DEFAULT 0, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, UNIQUE KEY uniq_openid_date (openid, sign_date))'
+    'CREATE TABLE IF NOT EXISTS sign_logs (id INT PRIMARY KEY AUTO_INCREMENT, openid VARCHAR(64) NOT NULL, sign_date DATE NOT NULL, points INT DEFAULT 0, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, UNIQUE KEY uniq_openid_date (openid, sign_date))'
   );
   return conn;
 }
@@ -65,14 +65,13 @@ exports.main = async (event, context) => {
       await conn.execute('INSERT INTO users (openid, points) VALUES (?,?)', [openid, 0]);
     }
     const [u2] = await conn.execute('SELECT id, points FROM users WHERE openid=?', [openid]);
-    const userId = u2[0].id;
     const [rows] = await conn.execute('SELECT id FROM sign_logs WHERE openid=? AND sign_date=?', [openid, today]);
     if (rows.length > 0) {
       await conn.end();
       return { success: false, error: '今日已签到' };
     }
 
-    await conn.execute('INSERT INTO sign_logs (openid, user_id, sign_date, points) VALUES (?,?,?,?)', [openid, userId, today, points]);
+    await conn.execute('INSERT INTO sign_logs (openid, sign_date, points) VALUES (?,?,?)', [openid, today, points]);
 
     // 更新用户积分
     await conn.execute(

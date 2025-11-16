@@ -58,31 +58,18 @@ Page({
       return;
     }
     
-    // 优先使用switchTab（courses页面是tab页面）
-    wx.setStorageSync('selectedCollege', college);
-    wx.setStorageSync('collegeTimestamp', Date.now());
-    
-    wx.switchTab({
-      url: '/pages/courses/index',
+    // 使用navigateTo透传参数；失败再降级为switchTab+存储
+    wx.navigateTo({
+      url: `/pages/courses/index?college=${encodeURIComponent(college)}`,
       success: () => {
-        console.log("✅ switchTab跳转成功，学院:", college);
+        console.log("✅ navigateTo跳转成功，学院:", college);
       },
-      fail: (err) => {
-        console.error("❌ switchTab失败，尝试navigateTo:", err);
-        // 降级方案：使用navigateTo
-        wx.navigateTo({
-          url: `/pages/courses/index?college=${encodeURIComponent(college)}`,
-          success: () => {
-            console.log("✅ navigateTo跳转成功");
-          },
-          fail: (err2) => {
-            console.error("❌ 所有跳转方式失败:", err2);
-            wx.showModal({
-              title: '提示',
-              content: '跳转失败，请手动进入课程页面',
-              showCancel: false
-            });
-          }
+      fail: (err2) => {
+        console.warn("navigateTo失败，改用switchTab:", err2);
+        wx.setStorageSync('selectedCollege', college);
+        wx.setStorageSync('collegeTimestamp', Date.now());
+        wx.switchTab({
+          url: '/pages/courses/index'
         });
       }
     });

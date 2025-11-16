@@ -1,8 +1,10 @@
-// 课程页面逻辑 - 最终修复版本
+// 课程页面逻辑（按月份从MySQL加载）
 Page({
   data: {
     currentCollege: '建筑工程学院',
     courses: [],
+    months: [],
+    currentMonth: null,
     colleges: [
       '建筑工程学院',
       '智能制造与电梯学院',
@@ -16,47 +18,66 @@ Page({
   },
 
   onLoad(options) {
-    console.log("=== 课程页面加载 ===");
-    
-    // 处理参数优先级：URL参数 > 本地存储 > 默认
     let selectedCollege = '建筑工程学院';
-    
     if (options && options.college) {
       selectedCollege = decodeURIComponent(options.college);
     } else if (wx.getStorageSync('selectedCollege')) {
       selectedCollege = wx.getStorageSync('selectedCollege');
     }
-    
-    console.log("当前学院:", selectedCollege);
     this.setData({ currentCollege: selectedCollege });
-    this.loadCourses(selectedCollege);
+    this.loadMonthsAndCourses();
   },
 
   onShow() {
-    // 支持通过本地存储切换学院
-    if (wx.getStorageSync('selectedCollege')) {
-      const college = wx.getStorageSync('selectedCollege');
-      if (college !== this.data.currentCollege) {
-        this.setData({ currentCollege: college });
-        this.loadCourses(college);
-      }
+    const stored = wx.getStorageSync('selectedCollege');
+    const college = stored || this.data.currentCollege;
+    if (college !== this.data.currentCollege) {
+      this.setData({ currentCollege: college });
     }
+    this.loadMonthsAndCourses();
+  },
+
+  // 加载月份并拉取当前月份课程
+  async loadMonthsAndCourses() {
+    try {
+      const mres = await wx.cloud.callFunction({ name: 'courseSchedule', data: { action: 'months', college: this.data.currentCollege } });
+      const months = (mres.result && mres.result.months) ? mres.result.months : [];
+      const currentMonth = months.length ? months[0] : null;
+      this.setData({ months, currentMonth });
+      if (currentMonth) {
+        await this.loadCourses(currentMonth);
+      } else {
+        this.setData({ courses: [] });
+      }
+    } catch (e) {
+      this.setData({ months: [], currentMonth: null, courses: [] });
+    }
+  },
+
+  // 拉取课程列表
+  async loadCourses(month) {
+    try {
+      const res = await wx.cloud.callFunction({ name: 'courseSchedule', data: { action: 'list', college: this.data.currentCollege, month } });
+      const courses = (res.result && res.result.courses) ? res.result.courses : [];
+      this.setData({ courses });
+    } catch (e) {
+      this.setData({ courses: [] });
+    }
+  },
+
+  // 月份点击
+  onMonthTap(e) {
+    const month = Number(e.currentTarget.dataset.month);
+    if (!month || month === this.data.currentMonth) return;
+    this.setData({ currentMonth: month });
+    this.loadCourses(month);
   },
 
   // 切换学院
   switchCollege(e) {
     const college = e.currentTarget.dataset.college;
-    console.log("切换学院:", college);
-    
     this.setData({ currentCollege: college });
     wx.setStorageSync('selectedCollege', college);
-    this.loadCourses(college);
-  },
-
-  // 加载课程数据
-  loadCourses(college) {
-    console.log("加载课程:", college);
-    const courses = require('./courses-data.js')[college] || [];
-    this.setData({ courses });
+    this.loadMonthsAndCourses();
   }
 });

@@ -56,10 +56,16 @@
 
     <!-- 右侧课程内容 -->
     <view class="main-content">
-      <view class="current-college-info">
-        <text class="college-title">{{currentCollege}}</text>
-        <text class="course-count">{{courses.length}} 门课程</text>
-      </view>
+    <view class="current-college-info">
+      <text class="college-title">{{currentCollege}}</text>
+      <text class="course-count">{{courses.length}} 门课程</text>
+    </view>
+
+    <!-- 月份滑块 -->
+    <scroll-view scroll-x class="month-tabs">
+      <view class="month-tab {{currentMonth===item? 'active' : ''}}" wx:for="{{months}}" wx:key="month" data-month="{{item}}" bindtap="onMonthTap">{{item}}月</view>
+      <view wx:if="{{months.length===0}}" class="month-empty">暂无月份</view>
+    </scroll-view>
 
       <view class="course-list">
         <view class="course-item" wx:for="{{courses}}" wx:key="id">
@@ -74,7 +80,7 @@
         </view>
         
         <view wx:if="{{courses.length === 0}}" class="empty-state">
-          <text>暂无{{currentCollege}}的课程</text>
+          <text>暂无{{currentCollege}} {{currentMonth}} 月的课程</text>
         </view>
       </view>
     </view>
