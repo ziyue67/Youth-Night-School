@@ -27,38 +27,42 @@
    - 打包为 `dailySign.zip`，包含：`index.js`、`package.json`、`package-lock.json`、`node_modules/`
    - 在腾讯云 SCF 控制台选择函数 `dailySign`，运行环境 `Nodejs10.15` 或更高版本，上传 ZIP 并部署。
 
-3. 配置环境变量（外网 MySQL）
-   - `MYSQL_HOST`：如 `sh-cynosdbmysql-grp-xxxx.sql.tencentcdb.com`
-   - `MYSQL_PORT`：如 `21639`
-   - `MYSQL_USER`：数据库账号（建议非 root）
-   - `MYSQL_PASSWORD`：数据库密码
-   - `MYSQL_DATABASE`：库名，如 `weix2`
+3. 环境变量（强烈建议在云函数配置中设置）：
 
-4. 验证
-   - SCF 测试 `{"action":"status","openid":"<你的openid>"}`，应返回 `backend: "mysql"`、`points` 与 `signRecord`。
-   - 小程序“我的积分/夜校任务”页面显示与数据库一致的积分和日期。
+- `MYSQL_HOST`
+- `MYSQL_PORT`
+- `MYSQL_USER`
+- `MYSQL_PASSWORD`
+- `MYSQL_DATABASE`
 
-## 关键实现说明
+安全提示：不要将数据库凭证写入源码或提交到 Git 仓库。使用云平台的环境变量功能来管理敏感信息。
 
-- 云函数只使用 MySQL：缺失 `MYSQL_*` 变量时直接报错；不再回退到云开发数据库。
-- 兼容 `wx-server-sdk`：函数内部懒加载，缺失时从 `event.openid` 读取；前端已在调用时传入 `openid`。
-- 日期一致性：MySQL 连接启用 `dateStrings: true`，并将签到记录日期统一输出为 `YYYY-MM-DD`。
+小程序
+- 小程序源码在 `miniprogram/`，可使用微信开发者工具打开并调试。确保云函数部署并配置正确的云函数 URL 或环境后端。
 
-## 推送到 GitHub
+Git / 推送到 GitHub（简要）
+1. 本地提交：
 
-1. 初始化并提交：
-   - 在项目根目录执行：
-     - `git init`
-     - `git add .`
-     - `git commit -m "init: Youth Night School with MySQL-based dailySign"`
+```
+git add README.md
+git commit -m "docs: update README"
+```
 
-2. 创建远程仓库：
-   - 在 GitHub 新建仓库，例如 `Youth-Night-School`（私有或公开均可）。
+2. 绑定远程并推送（如果尚未绑定）：
 
-3. 绑定并推送：
-   - `git branch -M main`
-   - `git remote add origin https://github.com/<你的用户名>/Youth-Night-School.git`
-   - `git push -u origin main`
+```
+git branch -M main
+git remote add origin https://github.com/<你的用户名>/Youth-Night-School.git
+git push -u origin main
+```
 
-> 安全提示：不要将数据库密码等敏感信息写入代码或提交到仓库。云函数使用环境变量读取敏感信息。
+如果远程已存在，只需执行 `git push` 即可。
+
+更多信息与贡献
+- 如果你想部署、测试或扩展云函数，请在 `cloudfunctions/` 下查看对应函数目录中的 `README` 或 `index.js` 注释。
+- 欢迎提交 issue 或 Pull Request，描述你希望改进或修复的点。
+
+----
+
+如果你希望我代为提交并推送到你的 GitHub（需要本地已配置远程且有推送权限），我可以继续为你执行 `git add/commit/push` 操作。请确认是否现在进行推送。
 
