@@ -82,7 +82,7 @@
       <text class="title-text">关于我们</text>
     </view>
     <text class="about-text">青春夜校是由高年级学长学姐主导的朋辈教育平台，以"五育并举"为核心，为大一新生提供学业、技能、成长全方位支持。</text>
-    <button class="about-button" bindtap="onAboutTap">了解更多</button>
+    
   </view>
 
   <!-- 底部固定栏 -->

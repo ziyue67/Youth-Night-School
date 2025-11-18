@@ -49,7 +49,7 @@ function normalizeCollege(name) {
 }
 
 exports.main = async (event) => {
-  const { action, college, month } = event;
+  const { action, college, month, keyword } = event;
   try {
     const conn = await getConn();
     const normalizedCollege = normalizeCollege(college);
@@ -80,6 +80,28 @@ exports.main = async (event) => {
       await conn.end();
       const courses = all.map(r => ({ id: r.id, name: r.title, time: `${r.week} ${r.ts}-${r.te}`, teacher: '', status: r.status || 'available' }));
       return { success: true, courses };
+    }
+    if (action === 'search') {
+      const kw = String(keyword || '').trim();
+      if (!kw) { await conn.end(); return { success: true, results: [] }; }
+      // 跨学院检索：如果提供 college 则限定，否则遍历所有映射表
+      const colleges = normalizedCollege ? [normalizedCollege] : (event.colleges || []);
+      const allTables = colleges.length ? pickTables(normalizedCollege) : [ ...new Set([ ...pickTables('建筑工程学院'), ...pickTables('智能制造与电梯学院'), ...pickTables('新能源工程与汽车学院'), ...pickTables('信息工程与物联网学院'), ...pickTables('经济管理与电商学院'), ...pickTables('旅游管理学院'), ...pickTables('艺术设计与时尚创意学院'), ...pickTables('社会发展与公共教育学院') ]) ];
+      const results = [];
+      for (const t of allTables) {
+        try {
+          // 模糊匹配课程标题
+          const [rows] = await conn.execute(
+            `SELECT id, title, month, college, week, TIME_FORMAT(time_start, "%H:%i") AS ts, TIME_FORMAT(time_end, "%H:%i") AS te, status FROM \`${t}\` WHERE title LIKE ? ORDER BY month, week, time_start LIMIT 50`,
+            [ `%${kw}%` ]
+          );
+          for (const r of rows) {
+            results.push({ id: r.id, name: r.title, college: r.college, month: Number(r.month), time: `${r.week} ${r.ts}-${r.te}`, status: r.status || 'available' });
+          }
+        } catch (e) {}
+      }
+      await conn.end();
+      return { success: true, results };
     }
     await conn.end();
     return { success: false, error: '未知操作' };

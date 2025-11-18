@@ -5,6 +5,10 @@ Page({
     courses: [],
     months: [],
     currentMonth: null,
+    searchKeyword: '',
+    searchResults: [],
+    scrollTarget: '',
+    highlightCourseId: null,
     colleges: [
       '建筑工程学院',
       '智能制造与电梯学院',
@@ -79,5 +83,31 @@ Page({
     this.setData({ currentCollege: college });
     wx.setStorageSync('selectedCollege', college);
     this.loadMonthsAndCourses();
+  },
+  onSearchInput(e) {
+    this.setData({ searchKeyword: e.detail.value || '' });
+  },
+  async onSearchConfirm() {
+    const keyword = (this.data.searchKeyword || '').trim();
+    if (!keyword) { this.setData({ searchResults: [] }); return; }
+    try {
+      const res = await wx.cloud.callFunction({ name: 'courseSchedule', data: { action: 'search', keyword } });
+      const results = (res.result && res.result.results) ? res.result.results : [];
+      this.setData({ searchResults: results.slice(0, 50) });
+      if (results.length === 1) {
+        this.applySearchChoice({ currentTarget: { dataset: { college: results[0].college, month: results[0].month, id: results[0].id } } });
+      }
+    } catch (e) {
+      this.setData({ searchResults: [] });
+    }
+  },
+  async applySearchChoice(e) {
+    const { college, month, id } = e.currentTarget.dataset;
+    if (!college || !month || !id) return;
+    this.setData({ currentCollege: college, currentMonth: Number(month), searchResults: [] });
+    wx.setStorageSync('selectedCollege', college);
+    await this.loadCourses(Number(month));
+    this.setData({ scrollTarget: `course-item-${id}`, highlightCourseId: id });
+    setTimeout(() => { this.setData({ highlightCourseId: null }); }, 2000);
   }
 });

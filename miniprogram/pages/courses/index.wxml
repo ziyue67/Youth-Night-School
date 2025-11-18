@@ -56,6 +56,10 @@
 
     <!-- 右侧课程内容 -->
     <view class="main-content">
+    <view class="search-box">
+      <input class="search-input" placeholder="搜索课程标题（跨学院）" confirm-type="search" bindconfirm="onSearchConfirm" bindinput="onSearchInput" value="{{searchKeyword}}" />
+      <text class="search-icon">搜索</text>
+    </view>
     <view class="current-college-info">
       <text class="college-title">{{currentCollege}}</text>
       <text class="course-count">{{courses.length}} 门课程</text>
@@ -67,8 +71,8 @@
       <view wx:if="{{months.length===0}}" class="month-empty">暂无月份</view>
     </scroll-view>
 
-      <view class="course-list">
-        <view class="course-item" wx:for="{{courses}}" wx:key="id">
+      <scroll-view class="course-list" scroll-y="true" scroll-into-view="{{scrollTarget}}">
+        <view id="course-item-{{item.id}}" class="course-item {{highlightCourseId===item.id ? 'highlight' : ''}}" wx:for="{{courses}}" wx:key="id">
           <view class="course-header">
             <text class="course-name">{{item.name}}</text>
             <text class="course-status {{item.status}}">{{item.status}}</text>
@@ -81,6 +85,13 @@
         
         <view wx:if="{{courses.length === 0}}" class="empty-state">
           <text>暂无{{currentCollege}} {{currentMonth}} 月的课程</text>
+        </view>
+      </scroll-view>
+
+      <view wx:if="{{searchResults.length>0}}" class="search-results">
+        <view class="search-result-item" wx:for="{{searchResults}}" wx:key="id" bindtap="applySearchChoice" data-college="{{item.college}}" data-month="{{item.month}}" data-id="{{item.id}}">
+          <text class="result-title">{{item.name}}</text>
+          <text class="result-meta">{{item.college}} · {{item.month}}月 · {{item.time}}</text>
         </view>
       </view>
     </view>

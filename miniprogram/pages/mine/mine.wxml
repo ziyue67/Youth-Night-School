@@ -63,11 +63,7 @@
     
     
     
-    <view wx:if="{{!isLogin}}" class="menu-item" bindtap="gotoPhoneLogin">
-      <image class="menu-icon" src="../../images/icons/phone.png" mode="aspectFit"></image>
-      <text class="menu-text">手机号登录</text>
-      <image class="arrow" src="../../images/icons/arrow.svg" mode="aspectFit"></image>
-    </view>
+    
   </view>
 
   <!-- 设置和退出 -->

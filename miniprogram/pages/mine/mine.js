@@ -17,15 +17,13 @@ Page({
     this.checkLoginStatus();
   },
 
-  // 检查登录状态（支持多种登录方式）
+  // 检查登录状态（仅保留微信认证）
   checkLoginStatus() {
     const wxUserInfo = wx.getStorageSync('userInfo');
     const wxToken = wx.getStorageSync('token');
-    const smsUserInfo = wx.getStorageSync('smsUserInfo');
-    const phoneUserInfo = wx.getStorageSync('phoneUserInfo');
     const openid = wx.getStorageSync('openid');
 
-    let userInfo = smsUserInfo || phoneUserInfo || wxUserInfo || null;
+    let userInfo = wxUserInfo || null;
     let isLogin = !!(userInfo || openid || wxToken);
 
     if (!userInfo && (openid || wxToken)) {
@@ -51,34 +49,9 @@ Page({
     }
   },
 
-  // 显示登录选项
+  // 登录入口：直接进行微信授权登录
   showLoginOptions() {
-    wx.showActionSheet({
-      itemList: ['微信手机号登录', '短信验证码登录', '微信授权登录'],
-      success: (res) => {
-        switch (res.tapIndex) {
-          case 0:
-            // 微信手机号登录
-            wx.navigateTo({
-              url: '/pages/phone-auth-login/index'
-            });
-            break;
-          case 1:
-            // 短信验证码登录
-            wx.navigateTo({
-              url: '/pages/sms-login/index'
-            });
-            break;
-          case 2:
-            // 微信授权登录
-            this.handleWechatLogin();
-            break;
-        }
-      },
-      fail: () => {
-        console.log('用户取消选择');
-      }
-    });
+    this.handleWechatLogin();
   },
 
   // 原有的微信登录方法
@@ -130,12 +103,7 @@ Page({
     }
   },
 
-  // 跳转到微信手机号登录
-  gotoPhoneLogin() {
-    wx.navigateTo({
-      url: '/pages/phone-auth-login/index'
-    });
-  },
+  // 移除其他登录方式，不再提供跳转
 
   // 每日签到（主页入口）
   async handleDailySign() {
@@ -183,8 +151,6 @@ Page({
         if (res.confirm) {
           wx.removeStorageSync('userInfo');
           wx.removeStorageSync('token');
-          wx.removeStorageSync('smsUserInfo');
-          wx.removeStorageSync('phoneUserInfo');
           wx.removeStorageSync('openid');
           
           this.setData({

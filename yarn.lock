@@ -1428,6 +1428,11 @@
     "@types/prop-types" "*"
     csstype "^3.0.2"
 
+"@vant/weapp@^1.11.6":
+  version "1.11.7"
+  resolved "https://registry.npmjs.org/@vant/weapp/-/weapp-1.11.7.tgz"
+  integrity sha512-Rwn9BBnb4kHSV4XmvBicwtd42J+amEUfnFDcXJsGNPNX4a9c/DoT6YLsm4X1wB2+sQbdiQsbFBLAvGRBxCkD8g==
+
 "@vitejs/plugin-react-swc@^3.5.0":
   version "3.11.0"
   resolved "https://registry.npmjs.org/@vitejs/plugin-react-swc/-/plugin-react-swc-3.11.0.tgz"
@@ -3683,6 +3688,11 @@ uuid@^3.3.2:
   version "3.4.0"
   resolved "https://registry.npmjs.org/uuid/-/uuid-3.4.0.tgz"
   integrity sha512-HjSDRw6gZE5JMggctHBcjVak08+KEVhSIiDzFnT9S9aegmp85S/bReBVTb4QTFaRNptJ9kuYaNhnbNEOkbKb/A==
+
+vant-weapp@^0.5.29:
+  version "0.5.29"
+  resolved "https://registry.npmjs.org/vant-weapp/-/vant-weapp-0.5.29.tgz"
+  integrity sha512-RMc0Ga914XFwspw2WuOMU8bOHlIkua8X1DoQ/KPnGQzjwT1uEL4S7W186EmaHF1wN2krB9BVd0LdRRt39dGh6Q==
 
 vary@~1.1.2:
   version "1.1.2"
