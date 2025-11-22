@@ -35,7 +35,7 @@ cloudbase.useAdapters(adapter, { EventBus });
 
 // 初始化云开发
 const app = cloudbase.init({
-    env: process.env.CLOUD_ENV_ID || 'cloud1-9go506hg40673425', // 使用环境变量或默认值
+    env: 'cloud1-9go506hg40673425', // 云开发环境ID
     region: 'ap-shanghai', // 可选：指定区域
     timeout: 5000, // 可选：超时时间
     persistence: 'local' // 可选：本地存储
