@@ -1,8 +1,13 @@
 <view class="container">
   <view class="news-list">
-    <view class="news-item" wx:for="{{newsList}}" wx:key="id">
-      <view class="news-title">{{item.title}}</view>
-      <view class="news-date">{{item.date}}</view>
+    <view class="news-item {{item.type}}" wx:for="{{newsList}}" wx:key="id" bindtap="onNewsTap" data-item="{{item}}">
+      <view class="news-content">
+        <view class="news-title">{{item.title}}</view>
+        <view class="news-date">{{item.date}}</view>
+      </view>
+      <view class="news-image" wx:if="{{item.type === 'wechat'}}">
+        <image src="{{item.image}}" mode="aspectFit" class="wechat-logo"></image>
+      </view>
     </view>
   </view>
 </view>
