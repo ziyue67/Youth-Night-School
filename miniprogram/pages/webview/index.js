@@ -3,8 +3,7 @@ Page({
   data: {
     url: '',
     title: '',
-    loadError: false,
-    errorMessage: ''
+    showWeChatTips: true
   },
 
   onLoad(options) {
@@ -29,10 +28,6 @@ Page({
       console.log('WebView加载URL:', decodedUrl);
       console.log('WebView标题:', decodedTitle);
     } else {
-      this.setData({
-        loadError: true,
-        errorMessage: '链接无效'
-      });
       wx.showToast({
         title: '链接无效',
         icon: 'none'
@@ -41,23 +36,6 @@ Page({
         wx.navigateBack();
       }, 1500);
     }
-  },
-
-  // 处理网页加载成功
-  onWebLoadSuccess() {
-    console.log('网页加载成功');
-    this.setData({
-      loadError: false
-    });
-  },
-
-  // 处理网页加载失败
-  onWebLoadError(e) {
-    console.error('网页加载失败:', e);
-    this.setData({
-      loadError: true,
-      errorMessage: '网页加载失败'
-    });
   },
 
   // 复制链接到微信
@@ -76,6 +54,16 @@ Page({
           icon: 'none'
         });
       }
+    });
+  },
+
+  // 在微信中打开
+  openInWeChat() {
+    this.copyToWeChat();
+    wx.showModal({
+      title: '提示',
+      content: '链接已复制到剪贴板，请在微信中粘贴打开',
+      showCancel: false
     });
   },
 
