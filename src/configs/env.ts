@@ -1,3 +1,3 @@
 export default {
-  env: 'cloud1-9go506hg40673425'
+  env: process.env.CLOUD_ENV_ID || 'cloud1-9go506hg40673425'
 }

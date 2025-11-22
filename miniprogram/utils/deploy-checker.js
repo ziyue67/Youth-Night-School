@@ -1,7 +1,7 @@
 // 云环境部署检查工具
 class DeployChecker {
   constructor() {
-    this.envId = 'cloud1-9go506hg40673425';
+    this.envId = process.env.CLOUD_ENV_ID || 'cloud1-9go506hg40673425';
     this.requiredFunctions = [
       'getPhoneNumber',
       'wechatLogin', 

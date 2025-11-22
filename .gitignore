@@ -31,4 +31,20 @@ project.zip
 .env.local
 # Cloud development configuration
 cloudbaserc.json
+
+# Environment and privacy files
+miniprogram/app.js
+miniprogram/pages/debug/env-fix.js
+miniprogram/pages/debug/env-test.wxml
+.vercel/
 .gitignore
+
+# Additional sensitive files
+.env
+.env.*
+*.env
+config.js
+config.json
+secrets.json
+private/
+credentials/
