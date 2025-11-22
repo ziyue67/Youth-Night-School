@@ -1,50 +1,15 @@
 <view class="container">
-  <!-- 正常加载WebView -->
   <web-view 
-    wx:if="{{!loadError}}"
     src="{{url}}" 
     bindload="onWebLoadSuccess"
     binderror="onWebLoadError">
   </web-view>
   
-  <!-- 加载失败或备用方案 -->
-  <view wx:if="{{loadError}}" class="error-container">
-    <view class="error-icon">📱</view>
-    <view class="error-title">无法在微信小程序中打开</view>
-    <view class="error-message">{{errorMessage}}</view>
-    
-    <view class="wechat-tips" wx:if="{{showWeChatTips}}">
-      <view class="tips-title">💡 微信公众号文章显示提示</view>
-      <view class="tips-content">
-        由于微信小程序安全限制，部分微信公众号文章无法在web-view中正常显示。
-      </view>
-    </view>
-    
-    <view class="action-buttons">
-      <button class="action-btn wechat-btn" bindtap="openInWeChat">
-        在微信中打开
-      </button>
-      <button class="action-btn copy-btn" bindtap="copyToWeChat">
-        复制链接
-      </button>
-      <button class="action-btn back-btn" bindtap="goBack">
-        返回
-      </button>
-    </view>
-    
-    <view class="tips-section">
-      <view class="tips-item">
-        <view class="tips-icon">1</view>
-        <view class="tips-text">点击"在微信中打开"，链接会自动复制到剪贴板</view>
-      </view>
-      <view class="tips-item">
-        <view class="tips-icon">2</view>
-        <view class="tips-text">在微信中粘贴链接即可查看文章内容</view>
-      </view>
-      <view class="tips-item">
-        <view class="tips-icon">3</view>
-        <view class="tips-text">也可直接复制链接，发送到微信打开</view>
-      </view>
-    </view>
+  <!-- 调试信息 -->
+  <view wx:if="{{loadError}}" style="position: fixed; top: 20rpx; left: 20rpx; right: 20rpx; background: #ff4444; color: white; padding: 20rpx; border-radius: 8rpx; z-index: 1000;">
+    <view>加载失败: {{errorMessage}}</view>
+    <view>URL: {{url}}</view>
+    <button bindtap="copyToWeChat" style="margin-top: 20rpx;">复制链接</button>
+    <button bindtap="goBack" style="margin-top: 20rpx; margin-left: 20rpx;">返回</button>
   </view>
 </view>

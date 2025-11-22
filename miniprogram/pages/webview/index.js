@@ -4,11 +4,12 @@ Page({
     url: '',
     title: '',
     loadError: false,
-    errorMessage: '',
-    showWeChatTips: false
+    errorMessage: ''
   },
 
   onLoad(options) {
+    console.log('WebView页面参数:', options);
+    
     const { url, title } = options;
     
     if (url) {
@@ -26,6 +27,7 @@ Page({
       });
       
       console.log('WebView加载URL:', decodedUrl);
+      console.log('WebView标题:', decodedTitle);
     } else {
       this.setData({
         loadError: true,
@@ -45,8 +47,7 @@ Page({
   onWebLoadSuccess() {
     console.log('网页加载成功');
     this.setData({
-      loadError: false,
-      showWeChatTips: false
+      loadError: false
     });
   },
 
@@ -55,8 +56,7 @@ Page({
     console.error('网页加载失败:', e);
     this.setData({
       loadError: true,
-      errorMessage: '网页加载失败',
-      showWeChatTips: true
+      errorMessage: '网页加载失败'
     });
   },
 
@@ -76,16 +76,6 @@ Page({
           icon: 'none'
         });
       }
-    });
-  },
-
-  // 在微信中打开
-  openInWeChat() {
-    this.copyToWeChat();
-    wx.showModal({
-      title: '提示',
-      content: '链接已复制到剪贴板，请在微信中粘贴打开',
-      showCancel: false
     });
   },
 
