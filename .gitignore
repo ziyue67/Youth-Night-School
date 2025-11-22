@@ -29,3 +29,6 @@ project.zip
 
 # Environment variables
 .env.local
+# Cloud development configuration
+cloudbaserc.json
+.gitignore
