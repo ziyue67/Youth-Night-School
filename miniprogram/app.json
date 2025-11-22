@@ -18,9 +18,6 @@
     "navigationBarTitleText": "青春夜校",
     "navigationBarTextStyle": "black"
   },
-  "webview": {
-    "webviewBackgroundColor": "#ffffff"
-  },
   "tabBar": {
     "color": "#7A7E83",
     "selectedColor": "#1E88E5",
