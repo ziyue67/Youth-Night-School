@@ -2,23 +2,35 @@
 Page({
   data: {
     url: '',
-    title: ''
+    title: '',
+    loadError: false,
+    errorMessage: '',
+    showWeChatTips: false
   },
 
   onLoad(options) {
     const { url, title } = options;
     
     if (url) {
+      const decodedUrl = decodeURIComponent(url);
+      const decodedTitle = decodeURIComponent(title || '外部链接');
+      
       this.setData({
-        url: decodeURIComponent(url),
-        title: decodeURIComponent(title || '外部链接')
+        url: decodedUrl,
+        title: decodedTitle
       });
       
       // 设置页面标题
       wx.setNavigationBarTitle({
-        title: decodeURIComponent(title || '外部链接')
+        title: decodedTitle
       });
+      
+      console.log('WebView加载URL:', decodedUrl);
     } else {
+      this.setData({
+        loadError: true,
+        errorMessage: '链接无效'
+      });
       wx.showToast({
         title: '链接无效',
         icon: 'none'
@@ -32,15 +44,54 @@ Page({
   // 处理网页加载成功
   onWebLoadSuccess() {
     console.log('网页加载成功');
+    this.setData({
+      loadError: false,
+      showWeChatTips: false
+    });
   },
 
   // 处理网页加载失败
   onWebLoadError(e) {
     console.error('网页加载失败:', e);
-    wx.showToast({
-      title: '网页加载失败',
-      icon: 'none'
+    this.setData({
+      loadError: true,
+      errorMessage: '网页加载失败',
+      showWeChatTips: true
     });
+  },
+
+  // 复制链接到微信
+  copyToWeChat() {
+    wx.setClipboardData({
+      data: this.data.url,
+      success: () => {
+        wx.showToast({
+          title: '链接已复制',
+          icon: 'success'
+        });
+      },
+      fail: () => {
+        wx.showToast({
+          title: '复制失败',
+          icon: 'none'
+        });
+      }
+    });
+  },
+
+  // 在微信中打开
+  openInWeChat() {
+    this.copyToWeChat();
+    wx.showModal({
+      title: '提示',
+      content: '链接已复制到剪贴板，请在微信中粘贴打开',
+      showCancel: false
+    });
+  },
+
+  // 返回上一页
+  goBack() {
+    wx.navigateBack();
   },
 
   // 分享功能
