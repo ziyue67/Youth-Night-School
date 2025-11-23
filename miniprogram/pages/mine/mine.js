@@ -6,7 +6,8 @@ Page({
     points: 0,
     tasks: [],
     signRecord: [],
-    signedToday: false
+    signedToday: false,
+    needPhone: false
   },
 
   onLoad() {
@@ -42,7 +43,10 @@ Page({
     const today = new Date().toISOString().slice(0, 10);
     const lastSignDate = wx.getStorageSync('lastSignDate');
 
-    this.setData({ isLogin, userInfo, signedToday: lastSignDate === today });
+    // 检查是否需要绑定手机号
+    const needPhone = isLogin && (!userInfo || !userInfo.phone);
+    
+    this.setData({ isLogin, userInfo, signedToday: lastSignDate === today, needPhone });
     
     if (isLogin) {
       this.loadUserData();
@@ -68,10 +72,17 @@ Page({
       });
 
       if (loginRes.code) {
+        // 先进行基本的微信登录，获取用户信息
         const cloudRes = await wx.cloud.callFunction({
           name: 'wechatLogin',
           data: {
-            action: 'login'
+            action: 'login',
+            code: loginRes.code,
+            userInfo: {
+              nickName: '微信用户',
+              avatarUrl: '',
+              phone: ''
+            }
           }
         });
 
@@ -83,23 +94,79 @@ Page({
           wx.setStorageSync('token', token);
           wx.setStorageSync('openid', openid);
           
+          // 检查是否需要绑定手机号
+          const needPhone = !userInfo || !userInfo.phone;
+          
           this.setData({ 
             isLogin: true, 
-            userInfo: userInfo 
+            userInfo: userInfo,
+            needPhone: needPhone
           });
           
           this.loadUserData();
           wx.showToast({ title: '登录成功', icon: 'success' });
         } else {
-          throw new Error(cloudRes.result.message || '登录失败');
+          console.error('云函数返回错误:', cloudRes.result);
+          throw new Error(cloudRes.result.error || cloudRes.result.message || '登录失败');
         }
       }
       
       wx.hideLoading();
     } catch (error) {
       wx.hideLoading();
-      wx.showToast({ title: '登录失败', icon: 'none' });
+      const errorMessage = error.message || '登录失败';
       console.error('登录失败:', error);
+      wx.showToast({ title: errorMessage, icon: 'none', duration: 3000 });
+    }
+  },
+
+  // 获取手机号回调函数
+  async getPhoneNumber(e) {
+    if (e.detail.errMsg === 'getPhoneNumber:ok') {
+      try {
+        wx.showLoading({ title: '绑定手机号...' });
+        
+        // 调用云函数解密手机号
+        const cloudRes = await wx.cloud.callFunction({
+          name: 'wechatLogin',
+          data: {
+            action: 'updateUserPhone',
+            openid: wx.getStorageSync('openid'),
+            encryptedData: e.detail.encryptedData,
+            iv: e.detail.iv
+          }
+        });
+
+        if (cloudRes.result.success) {
+          // 更新本地存储的用户信息
+          const userInfo = wx.getStorageSync('userInfo');
+          userInfo.phone = cloudRes.result.phone;
+          wx.setStorageSync('userInfo', userInfo);
+          
+          this.setData({ 
+            userInfo: userInfo,
+            needPhone: false
+          });
+          
+          wx.showToast({ title: '手机号绑定成功', icon: 'success' });
+        } else {
+          throw new Error(cloudRes.result.error || '手机号绑定失败');
+        }
+      } catch (error) {
+        console.error('手机号绑定失败:', error);
+        wx.showToast({ title: '手机号绑定失败', icon: 'none', duration: 3000 });
+      } finally {
+        wx.hideLoading();
+      }
+    } else {
+      console.log('用户拒绝授权手机号');
+      // 用户拒绝授权，显示提示
+      wx.showModal({
+        title: '提示',
+        content: '您拒绝了手机号授权，可能会影响部分功能使用。您可以在"我的"页面中重新绑定手机号。',
+        showCancel: false,
+        confirmText: '我知道了'
+      });
     }
   },
 

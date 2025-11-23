@@ -4,7 +4,7 @@
   "description": "获取用户手机号",
   "main": "index.js",
   "dependencies": {
-    "wx-server-sdk": "~2.6.3",
-    "mysql2": "^3.9.3"
+    "mysql2": "^3.15.3",
+    "wx-server-sdk": "~2.6.3"
   }
 }

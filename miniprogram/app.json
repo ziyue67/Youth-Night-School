@@ -9,7 +9,7 @@
     "pages/example/index",
     "pages/points/points",
     "pages/tasks/tasks",
-    "pages/webview/webview"
+    "pages/webview/index"
   ],
   "window": {
     "backgroundColor": "#F6F6F6",

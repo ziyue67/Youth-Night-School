@@ -25,8 +25,8 @@
           "name": "pages/webview/webview",
           "pathName": "pages/webview/webview",
           "query": "url=https%253A%252F%252Fmp.weixin.qq.com%252Fs%252FhzgONdwEJaMm18JIYa6bMA&title=%25E6%25B9%2596%25E5%25B7%259E%25E8%2581%258C%25E4%25B8%259A%25E6%258A%2580%25E6%259C%25AF%25E5%25AD%25A6%25E9%2599%25A2%25E5%25AE%2598%25E6%2596%25B9%25E5%2585%25AC%25E4%25BC%2597%25E5%258F%25B7",
-          "scene": null,
-          "launchMode": "default"
+          "launchMode": "default",
+          "scene": null
         },
         {
           "name": "我的积分pages/about/index",

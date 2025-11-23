@@ -1,4 +1,8 @@
-<view class="container">
+<!-- web-view组件显示公众号文章 -->
+<web-view wx:if="{{useWebView && url}}" src="{{url}}" bindload="onWebViewLoad" binderror="onWebViewError"></web-view>
+
+<!-- 备用显示界面 -->
+<view class="container" wx:elif="{{showWeChatTips}}">
   <!-- 显示链接信息 -->
   <view class="link-info">
     <view class="link-title">{{title}}</view>
@@ -6,15 +10,18 @@
   </view>
   
   <!-- 微信公众号文章提示 -->
-  <view class="wechat-tips" wx:if="{{showWeChatTips}}">
+  <view class="wechat-tips">
     <view class="tips-title">💡 微信公众号文章</view>
     <view class="tips-content">
-      由于微信小程序安全限制，无法直接在应用内显示微信公众号文章。
+      无法直接显示公众号文章，请使用以下方式查看：
     </view>
   </view>
   
   <!-- 操作按钮 -->
   <view class="action-buttons">
+    <button class="action-btn retry-btn" bindtap="retryOpenArticle">
+      重新打开文章
+    </button>
     <button class="action-btn wechat-btn" bindtap="openInWeChat">
       在微信中打开
     </button>
@@ -40,5 +47,13 @@
       <view class="tips-icon">3</view>
       <view class="tips-text">也可直接复制链接，发送到微信打开</view>
     </view>
+  </view>
+</view>
+
+<!-- 加载提示 -->
+<view class="loading-container" wx:else>
+  <view class="loading-content">
+    <view class="loading-icon">📱</view>
+    <view class="loading-text">正在打开微信公众号文章...</view>
   </view>
 </view>

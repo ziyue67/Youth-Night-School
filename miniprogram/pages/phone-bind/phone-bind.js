@@ -1,4 +1,4 @@
-// pages/webview/webview.js
+// pages/phone-bind/phone-bind.js
 Page({
 
   /**

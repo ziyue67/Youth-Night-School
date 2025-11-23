@@ -3,7 +3,9 @@ Page({
   data: {
     url: '',
     title: '',
-    showWeChatTips: true
+    showWeChatTips: false,
+    isWeChatArticle: false,
+    useWebView: true
   },
 
   onLoad(options) {
@@ -15,9 +17,13 @@ Page({
       const decodedUrl = decodeURIComponent(url);
       const decodedTitle = decodeURIComponent(title || '外部链接');
       
+      // 检查是否为微信公众号文章
+      const isWeChatArticle = decodedUrl.includes('mp.weixin.qq.com');
+      
       this.setData({
         url: decodedUrl,
-        title: decodedTitle
+        title: decodedTitle,
+        isWeChatArticle: isWeChatArticle
       });
       
       // 设置页面标题
@@ -27,6 +33,12 @@ Page({
       
       console.log('WebView加载URL:', decodedUrl);
       console.log('WebView标题:', decodedTitle);
+      console.log('是否为微信公众号文章:', isWeChatArticle);
+      
+      // 如果是微信公众号文章，尝试使用微信内置文章预览
+      if (isWeChatArticle) {
+        this.tryOpenWeChatArticle(decodedUrl, decodedTitle);
+      }
     } else {
       wx.showToast({
         title: '链接无效',
@@ -35,6 +47,40 @@ Page({
       setTimeout(() => {
         wx.navigateBack();
       }, 1500);
+    }
+  },
+
+  // 尝试打开微信公众号文章
+  tryOpenWeChatArticle(url, title) {
+    // 首先尝试使用微信内置文章预览
+    if (wx.previewMessage) {
+      wx.previewMessage({
+        articles: [{
+          title: title,
+          path: url
+        }],
+        success: (res) => {
+          console.log('文章预览成功', res);
+          // 预览成功后返回上一页
+          setTimeout(() => {
+            wx.navigateBack();
+          }, 500);
+        },
+        fail: (err) => {
+          console.error('文章预览失败', err);
+          // 如果预览失败，使用web-view显示
+          this.setData({
+            useWebView: true,
+            showWeChatTips: false
+          });
+        }
+      });
+    } else {
+      // 如果不支持wx.previewMessage，使用web-view显示
+      this.setData({
+        useWebView: true,
+        showWeChatTips: false
+      });
     }
   },
 
@@ -72,11 +118,37 @@ Page({
     wx.navigateBack();
   },
 
+  // WebView加载成功
+  onWebViewLoad(e) {
+    console.log('WebView加载成功', e);
+  },
+
+  // WebView加载失败
+  onWebViewError(e) {
+    console.error('WebView加载失败', e);
+    // 如果WebView加载失败，显示备用界面
+    this.setData({
+      useWebView: false,
+      showWeChatTips: true
+    });
+  },
+
+  // 重新打开文章
+  retryOpenArticle() {
+    if (this.data.isWeChatArticle) {
+      this.setData({
+        showWeChatTips: false,
+        useWebView: true
+      });
+      this.tryOpenWeChatArticle(this.data.url, this.data.title);
+    }
+  },
+
   // 分享功能
   onShareAppMessage() {
     return {
       title: this.data.title,
-      path: `/pages/webview/webview?url=${encodeURIComponent(this.data.url)}&title=${encodeURIComponent(this.data.title)}`
+      path: `/pages/webview/index?url=${encodeURIComponent(this.data.url)}&title=${encodeURIComponent(this.data.title)}`
     };
   }
 });

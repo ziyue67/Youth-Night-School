@@ -13,9 +13,17 @@
       <image class="avatar" src="{{userInfo.avatarUrl || '../../images/icons/avatar.png'}}" mode="aspectFit"></image>
       <view class="user-details">
         <text class="nickname">{{userInfo.nickName || '青春夜校学员'}}</text>
-        <text class="phone">{{userInfo.phoneNumber || ''}}</text>
+        <text class="phone">{{userInfo.phone || ''}}</text>
       </view>
     </view>
+  </view>
+  
+  <!-- 手机号绑定提示 -->
+  <view wx:if="{{isLogin && needPhone}}" class="phone-bind-notice">
+    <text class="notice-text">为了更好的服务体验，请绑定手机号</text>
+    <button class="phone-bind-btn" open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber">
+      绑定手机号
+    </button>
   </view>
 
   <!-- 功能统计 -->
@@ -60,7 +68,6 @@
       <text class="menu-text">课程签到</text>
       <image class="arrow" src="../../images/icons/arrow.svg" mode="aspectFit"></image>
     </view>
-    
     
     
     
