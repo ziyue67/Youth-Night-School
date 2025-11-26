@@ -210,10 +210,6 @@ Page({
     wx.navigateTo({ url: '/pages/about/about' });
   },
 
-  gotoAdmin() {
-    wx.navigateTo({ url: '/pages/admin/index' });
-  },
-
   handleLogout() {
     wx.showModal({
       title: '提示',
