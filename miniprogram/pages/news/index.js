@@ -1,46 +1,112 @@
 // 动态页面
 Page({
   data: {
-    newsList: [
-      { 
-        id: 1, 
-        title: "青春夜校开学典礼成功举办", 
-        date: "2024-09-01",
-        type: "normal"
-      },
-      { 
-        id: 2, 
-        title: "新生破冰活动圆满结束", 
-        date: "2024-09-05",
-        type: "normal"
-      },
-      { 
-        id: 3, 
-        title: "月度优秀学员表彰", 
-        date: "2024-09-15",
-        type: "normal"
-      },
-      { 
-        id: 4, 
-        title: "湖职榜样|盛浩洁:以微薄之力,让科技有温度,让爱心有回响", 
-        date: "官方资讯",
-        type: "wechat",
-        url: "https://mp.weixin.qq.com/s/hzgONdwEJaMm18JIYa6bMA",
-        image: "/images/icons/customer-service.svg"
-      },
-      { 
-        id: 5, 
-        title: "湖州职业技术学院官网", 
-        date: "官方资讯",
-        type: "wechat",
-        url: "https://www.huvtc.edu.cn/",
-        image: "/images/icons/customer-service.svg"
+    newsList: [],
+    loading: true,
+    wechatArticles: []
+  },
+
+  onLoad: function() {
+    this.loadNewsData();
+  },
+
+  // 加载新闻数据
+  loadNewsData: function() {
+    this.loadWechatArticles();
+  },
+
+  // 加载微信公众号文章
+  loadWechatArticles: function() {
+    wx.showLoading({
+      title: '加载中...'
+    });
+
+    wx.cloud.callFunction({
+      name: 'getLocalWechatArticles'
+    }).then(res => {
+      wx.hideLoading();
+      
+      if (res.result && res.result.success) {
+        const wechatArticles = res.result.data.map(article => ({
+          id: article._id || article.id,
+          title: article.title,
+          date: this.formatDate(article.publish_time),
+          type: "wechat",
+          url: article.link,
+          description: article.title, // 使用标题作为描述
+          image: "/images/icons/customer-service.svg",
+          author: '',
+          readCount: 0,
+          likeCount: 0
+        }));
+        
+        this.setData({
+          wechatArticles: wechatArticles,
+          newsList: [...this.data.newsList, ...wechatArticles],
+          loading: false
+        });
+      } else {
+        console.error('获取公众号文章失败:', res.result?.error || '未知错误');
+        this.setData({
+          loading: false
+        });
+        // 如果获取失败，使用默认的文章
+        this.setDefaultWechatArticles();
       }
-    ]
+    }).catch(err => {
+      wx.hideLoading();
+      console.error('云函数调用失败:', err);
+      this.setData({
+        loading: false
+      });
+      // 如果获取失败，使用默认的文章
+      this.setDefaultWechatArticles();
+    });
+  },
+
+  // 格式化日期
+  formatDate: function(dateString) {
+    if (!dateString) return '官方资讯';
+    
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return '官方资讯';
+    
+    const now = new Date();
+    const diffTime = Math.abs(now - date);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    
+    if (diffDays === 0) {
+      return '今天';
+    } else if (diffDays === 1) {
+      return '昨天';
+    } else if (diffDays < 7) {
+      return `${diffDays}天前`;
+    } else {
+      return `${date.getMonth() + 1}月${date.getDate()}日`;
+    }
+  },
+
+  // 设置默认的微信公众号文章
+  setDefaultWechatArticles: function() {
+    // 不设置默认文章，直接显示空状态
+    this.setData({
+      wechatArticles: [],
+      newsList: [],
+      loading: false
+    });
+  },
+
+  // 刷新新闻数据
+  onRefresh: function() {
+    this.setData({
+      loading: true,
+      newsList: []
+    });
+    this.loadNewsData();
   },
 
   // 点击新闻项
-  onNewsTap(e) {
+  onNewsTap: function(e) {
     const { item } = e.currentTarget.dataset;
     
     if (item.type === 'wechat') {
@@ -55,5 +121,13 @@ Page({
         icon: 'none'
       });
     }
+  },
+
+  // 下拉刷新
+  onPullDownRefresh: function() {
+    this.onRefresh();
+    setTimeout(() => {
+      wx.stopPullDownRefresh();
+    }, 1000);
   }
 });

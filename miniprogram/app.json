@@ -9,7 +9,8 @@
     "pages/example/index",
     "pages/points/points",
     "pages/tasks/tasks",
-    "pages/webview/index"
+    "pages/webview/index",
+    "pages/admin/index"
   ],
   "window": {
     "backgroundColor": "#F6F6F6",

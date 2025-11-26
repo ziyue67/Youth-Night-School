@@ -22,15 +22,7 @@
   <!-- 任务列表 -->
   <view class="task-list">
     <text class="list-title">今日任务</text>
-    <view wx:for="{{tasks}}" wx:key="id" class="task-item">
-      <view class="task-left">
-        <text class="task-name">{{item.name}}</text>
-        <text class="task-points">+{{item.points}}积分</text>
-      </view>
-      <view class="task-status {{item.completed ? 'completed' : 'pending'}}">
-        {{item.completed ? '已完成' : '去完成'}}
-      </view>
-    </view>
+    
   </view>
 
   <!-- 签到记录 -->

@@ -1,0 +1,13 @@
+{
+  "name": "get-local-wechat-articles",
+  "version": "1.0.0",
+  "description": "从外部MySQL数据库的HZVTC_WeChat_Official_Articles表获取文章数据的云函数",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3",
+    "mysql2": "^2.3.3"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "name": "fetch-external-wechat-articles",
+  "version": "1.0.0",
+  "description": "从外部MySQL数据库获取微信公众号文章的云函数",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "fetch-external-wechat-articles": "file:",
+    "wx-server-sdk": "~2.6.3"
+  },
+  "devDependencies": {
+    "mysql2": "^3.15.3"
+  }
+}

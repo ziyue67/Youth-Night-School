@@ -19,12 +19,7 @@
   </view>
   
   <!-- 手机号绑定提示 -->
-  <view wx:if="{{isLogin && needPhone}}" class="phone-bind-notice">
-    <text class="notice-text">为了更好的服务体验，请绑定手机号</text>
-    <button class="phone-bind-btn" open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber">
-      绑定手机号
-    </button>
-  </view>
+  
 
   <!-- 功能统计 -->
   <view class="stats-section">
@@ -84,6 +79,12 @@
     <view class="menu-item" bindtap="gotoAbout">
       <image class="menu-icon" src="../../images/icons/about.png" mode="aspectFit"></image>
       <text class="menu-text">关于我们</text>
+      <image class="arrow" src="../../images/icons/arrow.svg" mode="aspectFit"></image>
+    </view>
+    
+    <view class="menu-item" bindtap="gotoAdmin">
+      <image class="menu-icon" src="../../images/icons/settings.png" mode="aspectFit"></image>
+      <text class="menu-text">公众号管理</text>
       <image class="arrow" src="../../images/icons/arrow.svg" mode="aspectFit"></image>
     </view>
     

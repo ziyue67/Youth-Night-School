@@ -1,32 +1,32 @@
 <view class="container">
   <view class="about-header">
     <image class="logo" src="../../images/icons/logo.png" mode="aspectFit"></image>
-    <text class="title">关于青春夜校</text>
+    <text class="title">锟斤拷锟斤拷锟洁春夜校</text>
   </view>
   
   <view class="content-section">
-    <view class="section-title">平台介绍</view>
+    <view class="section-title">平台锟斤拷锟斤拷</view>
     <view class="content-text">
-      青春夜校是由高年级学长学姐主导的朋辈教育平台，以"五育并举"为核心，为大一新生提供学业、技能、成长全方位支持。
+      锟洁春夜校锟斤拷锟缴革拷锟疥级学锟斤拷学锟斤拷锟斤拷锟斤拷锟斤拷锟襟辈斤拷锟斤拷平台锟斤拷锟斤拷"锟斤拷锟斤拷锟斤拷锟斤拷"为锟斤拷锟侥ｏ拷为锟斤拷一锟斤拷锟斤拷锟结供学业锟斤拷锟斤拷锟杰★拷锟缴筹拷全锟斤拷位支锟街★拷
     </view>
   </view>
   
   <view class="content-section">
-    <view class="section-title">服务宗旨</view>
+    <view class="section-title">锟斤拷锟斤拷锟斤拷旨</view>
     <view class="content-text">
-      通过朋辈赋能，帮助新生快速适应大学生活，培养综合素质，实现全面发展。
+      通锟斤拷锟襟辈革拷锟杰ｏ拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷应锟斤拷学锟斤拷锟筋，锟斤拷锟斤拷锟桔猴拷锟斤拷锟绞ｏ拷实锟斤拷全锟芥发展锟斤拷
     </view>
   </view>
   
   <view class="contact-section">
-    <view class="section-title">联系我们</view>
+    <view class="section-title">锟斤拷系锟斤拷锟斤拷</view>
     <view class="contact-item">
-      <text class="label">运营团队：</text>
-      <text class="value">青春夜校运营团队</text>
+      <text class="label">锟斤拷营锟脚队ｏ拷</text>
+      <text class="value">锟洁春夜校锟斤拷营锟脚讹拷</text>
     </view>
     <view class="contact-item">
-      <text class="label">服务时间：</text>
-      <text class="value">每周一至五 19:00-21:00</text>
+      <text class="label">锟斤拷锟斤拷时锟戒：</text>
+      <text class="value">每锟斤拷一锟斤拷锟斤拷 19:00-21:00</text>
     </view>
   </view>
 </view>

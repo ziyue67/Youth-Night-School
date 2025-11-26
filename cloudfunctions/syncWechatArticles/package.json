@@ -1,0 +1,13 @@
+{
+  "name": "sync-wechat-articles",
+  "version": "1.0.0",
+  "description": "同步外部微信公众号文章到本地数据库的云函数",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "mysql2": "^3.15.3",
+    "wx-server-sdk": "~2.6.3"
+  }
+}
