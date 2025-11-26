@@ -39,27 +39,28 @@ function navigateToPage(url, fallbackUrl = null) {
 
 // 统一的云函数调用函数
 async function callCloudFunction(functionName, data, showLoading = true, loadingTitle = '加载中...') {
-  if (showLoading) {
-    wx.showLoading({ title: loadingTitle });
-  }
+  let loadingShown = false;
   
   try {
+    if (showLoading) {
+      wx.showLoading({ title: loadingTitle });
+      loadingShown = true;
+    }
+    
     const result = await wx.cloud.callFunction({
       name: functionName,
       data: data
     });
     
-    if (showLoading) {
-      wx.hideLoading();
-    }
-    
     return result;
   } catch (error) {
-    if (showLoading) {
-      wx.hideLoading();
-    }
     console.error(`云函数调用失败: ${functionName}`, error);
     throw error;
+  } finally {
+    // 确保在所有情况下都隐藏加载提示
+    if (loadingShown) {
+      wx.hideLoading();
+    }
   }
 }
 
@@ -185,8 +186,11 @@ async function request(options = {}) {
     loadingTitle = '加载中...'
   } = options;
 
+  let loadingShown = false;
+
   if (showLoading) {
     wx.showLoading({ title: loadingTitle });
+    loadingShown = true;
   }
 
   return new Promise((resolve, reject) => {
@@ -199,16 +203,16 @@ async function request(options = {}) {
         ...header
       },
       success: (res) => {
-        if (showLoading) {
-          wx.hideLoading();
-        }
         resolve(res);
       },
       fail: (error) => {
-        if (showLoading) {
+        reject(error);
+      },
+      complete: () => {
+        // 确保在所有情况下都隐藏加载提示
+        if (loadingShown) {
           wx.hideLoading();
         }
-        reject(error);
       }
     });
   });

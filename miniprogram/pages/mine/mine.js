@@ -8,16 +8,18 @@ const {
   navigateToPage
 } = require('../../utils/common');
 
-// 我的页面 - 支持多种登录方式 - 优化后减少冗余
+// 我的页面 - 优化版本
 Page({
   data: {
     isLogin: false,
     userInfo: null,
     points: 0,
+    totalSigns: 0,
     tasks: [],
     signRecord: [],
     signedToday: false,
-    needPhone: false
+    needPhone: false,
+    loading: false
   },
 
   onLoad() {
@@ -28,7 +30,7 @@ Page({
     this.checkLoginStatus();
   },
 
-  // 检查登录状态 - 使用通用函数
+  // 检查登录状态
   checkLoginStatus() {
     const { isLogin, userInfo } = checkUserLoginStatus();
     const signedToday = checkTodaySignStatus();
@@ -41,12 +43,31 @@ Page({
     }
   },
 
-  // 登录入口：直接进行微信授权登录
+  // 修复签到次数的通用方法
+  fixTotalSigns(totalSigns, signRecord) {
+    if (totalSigns === 0 && signRecord.length > 0) {
+      const fixedSigns = signRecord.length;
+      console.log(`修复签到次数: 从0修正为${fixedSigns}，基于签到记录长度`);
+      return fixedSigns;
+    }
+    return totalSigns;
+  },
+
+  // 检查用户是否已登录的通用方法
+  checkLoginAndShowTip() {
+    if (!this.data.isLogin) {
+      wx.showToast({ title: '请先登录', icon: 'none' });
+      return false;
+    }
+    return true;
+  },
+
+  // 登录入口
   showLoginOptions() {
     this.handleWechatLogin();
   },
 
-  // 微信登录方法 - 使用通用函数
+  // 微信登录方法
   async handleWechatLogin() {
     try {
       const loginRes = await new Promise((resolve, reject) => {
@@ -70,7 +91,7 @@ Page({
         if (cloudRes.result.success) {
           const { openid, userInfo, token } = cloudRes.result;
           
-          // 使用通用存储函数
+          // 保存用户信息
           storage.set('userInfo', userInfo);
           storage.set('token', token);
           storage.set('openid', openid);
@@ -83,6 +104,7 @@ Page({
             needPhone: needPhone
           });
           
+          // 登录成功后立即加载用户数据
           this.loadUserData();
           showSuccess('登录成功');
         } else {
@@ -94,7 +116,7 @@ Page({
     }
   },
 
-  // 获取手机号回调函数 - 使用通用函数
+  // 获取手机号回调函数
   async getPhoneNumber(e) {
     if (e.detail.errMsg === 'getPhoneNumber:ok') {
       try {
@@ -135,11 +157,8 @@ Page({
   },
 
   // 每日签到（主页入口）
-  async handleDailySign() {
-    if (!this.data.isLogin) {
-      wx.showToast({ title: '请先登录', icon: 'none' });
-      return;
-    }
+  handleDailySign() {
+    if (!this.checkLoginAndShowTip()) return;
     if (this.data.signedToday) {
       wx.showToast({ title: '今日已签到', icon: 'none' });
       return;
@@ -147,8 +166,9 @@ Page({
     navigateToPage('/pages/tasks/tasks');
   },
 
-  // 页面跳转方法 - 使用通用函数
+  // 页面跳转方法 - 统一处理
   gotoPoints() {
+    if (!this.checkLoginAndShowTip()) return;
     navigateToPage('/pages/points/points');
   },
 
@@ -161,6 +181,7 @@ Page({
   },
 
   gotoProfile() {
+    if (!this.checkLoginAndShowTip()) return;
     navigateToPage('/pages/profile/index');
   },
 
@@ -172,7 +193,7 @@ Page({
     navigateToPage('/pages/about/about');
   },
 
-  // 退出登录 - 使用通用存储函数
+  // 退出登录
   handleLogout() {
     wx.showModal({
       title: '提示',
@@ -187,8 +208,10 @@ Page({
             isLogin: false,
             userInfo: null,
             points: 0,
+            totalSigns: 0,
             tasks: [],
-            signRecord: []
+            signRecord: [],
+            signedToday: false
           });
           showSuccess('已退出登录');
         }
@@ -196,44 +219,108 @@ Page({
     });
   },
 
-  // 加载用户数据 - 使用通用函数
+  // 加载用户数据 - 优化版本
   async loadUserData() {
+    if (this.data.loading) {
+      console.log('数据正在加载中，避免重复请求');
+      return;
+    }
+
+    this.setData({ loading: true });
+    
     try {
+      console.log('开始加载用户数据...');
+      
       const res = await callCloudFunction('dailySign', {
         action: 'status',
         openid: storage.get('openid')
-      }, false);
+      }, true, '加载用户数据中...');
+      
+      console.log('云函数返回结果:', res);
       
       if (res.result && res.result.success) {
         const today = new Date().toISOString().slice(0, 10);
         const points = res.result.points || 0;
-        const signedToday = !!res.result.signedToday;
         const signRecord = (res.result.signRecord || []).map(i => ({ date: i.date, points: i.points }));
+        let totalSigns = this.fixTotalSigns(res.result.totalSigns || 0, signRecord);
+        const signedToday = !!res.result.signedToday;
         
-        const info = storage.get('userInfo') || {};
-        info.points = points;
+        console.log('解析数据:', { points, totalSigns, signedToday, signRecordLength: signRecord.length });
         
-        storage.set('userInfo', info);
-        storage.set('lastSignDate', signedToday ? today : '');
-        storage.set('signRecord', signRecord);
-
-        this.setData({ points, signRecord: signRecord.slice(-6), signedToday });
+        // 更新本地存储和页面数据
+        this.updateUserDataAndStorage(points, totalSigns, signRecord, signedToday, today);
+        
         return;
+      } else {
+        console.error('云函数返回失败:', res.result);
+        throw new Error(res.result?.error || '数据加载失败');
       }
     } catch (e) {
-      // 静默处理错误
+      console.error('加载用户数据失败:', e);
+      this.loadLocalData();
+    } finally {
+      this.setData({ loading: false });
     }
+  },
+
+  // 更新用户数据和本地存储的通用方法
+  updateUserDataAndStorage(points, totalSigns, signRecord, signedToday, today) {
+    // 更新本地存储
+    const info = storage.get('userInfo') || {};
+    info.points = points;
+    info.totalSigns = totalSigns;
     
-    // 降级处理：使用本地存储数据
+    storage.set('userInfo', info);
+    storage.set('lastSignDate', signedToday ? today : '');
+    storage.set('signRecord', signRecord);
+
+    // 更新页面数据
+    this.setData({
+      points,
+      totalSigns,
+      signRecord: signRecord.slice(-6),
+      signedToday
+    });
+    
+    console.log('页面数据更新完成:', { points, totalSigns, signedToday });
+    
+    if (totalSigns > 0) {
+      console.log(`✅ 成功加载签到次数: ${totalSigns}`);
+    }
+  },
+
+  // 加载本地存储数据（降级处理）
+  loadLocalData() {
+    console.log('使用本地存储数据作为降级处理');
+    
     const info = storage.get('userInfo') || {};
     const record = storage.get('signRecord') || [];
     const today = new Date().toISOString().slice(0, 10);
     const lastSignDate = storage.get('lastSignDate');
     
+    let totalSigns = this.fixTotalSigns(info.totalSigns || record.length, record);
+    
     this.setData({
       points: info.points || 0,
+      totalSigns,
       signRecord: record,
+      signedToday: lastSignDate === today,
+      loading: false
+    });
+    
+    console.log('本地存储数据加载完成:', {
+      points: info.points || 0,
+      totalSigns,
       signedToday: lastSignDate === today
     });
+  },
+
+  // 手动刷新数据
+  async refreshData() {
+    if (!this.checkLoginAndShowTip()) return;
+    
+    console.log('手动刷新数据');
+    await this.loadUserData();
+    wx.showToast({ title: '数据已刷新', icon: 'success' });
   }
 });

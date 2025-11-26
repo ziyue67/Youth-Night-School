@@ -30,6 +30,7 @@ exports.main = async (event, context) => {
 
   if (action === 'status') {
     try {
+      console.log('查询用户状态，openid:', openid);
       const conn = await getMysql();
       const [urows] = await conn.execute('SELECT id, points FROM users WHERE openid=?', [openid]);
       let points = 0;
@@ -42,15 +43,36 @@ exports.main = async (event, context) => {
       }
       const [signedRows] = await conn.execute('SELECT id FROM sign_logs WHERE openid=? AND sign_date=?', [openid, today]);
       const [logs] = await conn.execute('SELECT sign_date AS date, points FROM sign_logs WHERE openid=? ORDER BY created_at DESC LIMIT 6', [openid]);
+      
+      // 先查询所有签到记录以便调试
+      const [allLogs] = await conn.execute('SELECT id, openid, sign_date, points FROM sign_logs WHERE openid=? ORDER BY sign_date DESC', [openid]);
+      console.log('用户所有签到记录:', allLogs);
+      
+      // 获取用户总签到次数
+      const [countRows] = await conn.execute('SELECT COUNT(*) as totalSigns FROM sign_logs WHERE openid=?', [openid]);
+      const totalSigns = countRows[0].totalSigns || 0;
+      
+      console.log('数据库查询结果:', {
+        openid,
+        points,
+        totalSigns,
+        signedToday: signedRows.length > 0,
+        logsCount: logs.length,
+        allLogsCount: allLogs.length,
+        countRows: countRows[0]
+      });
+      
       await conn.end();
       return {
         success: true,
         points,
+        totalSigns, // 返回签到次数而不是积分
         signedToday: signedRows.length > 0,
         signRecord: logs.map(r => ({ date: typeof r.date === 'string' ? r.date : new Date(r.date).toISOString().slice(0, 10), points: r.points })),
         backend: 'mysql'
       };
     } catch (err) {
+      console.error('查询用户状态失败:', err);
       return { success: false, error: err.message };
     }
   }
