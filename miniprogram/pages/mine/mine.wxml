@@ -18,9 +18,6 @@
     </view>
   </view>
   
-  <!-- 手机号绑定提示 -->
-  
-
   <!-- 功能统计 -->
   <view class="stats-section">
     <view class="stat-item">
@@ -32,59 +29,64 @@
       <text class="stat-label">任务数</text>
     </view>
     <view class="stat-item">
-      <text class="stat-number">{{signRecord.length}}</text>
+      <text class="stat-number">{{totalSigns || 0}}</text>
       <text class="stat-label">签到数</text>
     </view>
+  </view>
+  
+  <!-- 数据加载状态 -->
+  <view wx:if="{{loading}}" class="loading-section">
+    <text class="loading-text">数据加载中...</text>
   </view>
 
   <!-- 功能菜单 -->
   <view class="menu-section">
-    <view class="menu-item" bindtap="gotoPoints">
-      <image class="menu-icon" src="../../images/icons/points.png" mode="aspectFit"></image>
-      <text class="menu-text">我的积分</text>
+    <view class="menu-item points-item" bindtap="gotoPoints">
+      <view class="menu-icon-wrapper points-icon-wrapper">
+        <image class="menu-icon points-icon" src="../../images/icons/points.png" mode="aspectFit"></image>
+      </view>
+      <view class="menu-content">
+        <text class="menu-text points-text">我的积分</text>
+        <text class="menu-desc points-desc">查看积分明细</text>
+      </view>
       <image class="arrow" src="../../images/icons/arrow.svg" mode="aspectFit"></image>
     </view>
     
-    <view class="menu-item" bindtap="gotoTasks">
-      <image class="menu-icon" src="../../images/icons/tasks.png" mode="aspectFit"></image>
-      <text class="menu-text">夜校任务</text>
+    <view class="menu-item tasks-item" bindtap="gotoTasks">
+      <view class="menu-icon-wrapper tasks-icon-wrapper">
+        <image class="menu-icon tasks-icon" src="../../images/icons/tasks.png" mode="aspectFit"></image>
+      </view>
+      <view class="menu-content">
+        <text class="menu-text tasks-text">夜校任务</text>
+        <text class="menu-desc tasks-desc">完成学习任务</text>
+      </view>
       <image class="arrow" src="../../images/icons/arrow.svg" mode="aspectFit"></image>
     </view>
     
-    <view class="menu-item" bindtap="handleDailySign">
-      <image class="menu-icon" src="../../images/icons/sign.png" mode="aspectFit"></image>
-      <text class="menu-text">每日签到</text>
-      <text class="sign-status">{{signedToday ? '已签到' : '未签到'}}</text>
+    <view class="menu-item sign-item" bindtap="handleDailySign">
+      <view class="menu-icon-wrapper sign-icon-wrapper">
+        <image class="menu-icon sign-icon" src="../../images/icons/sign.png" mode="aspectFit"></image>
+      </view>
+      <view class="menu-content">
+        <text class="menu-text sign-text">每日签到</text>
+        <text class="sign-status">{{signedToday ? '已签到' : '未签到'}}</text>
+      </view>
       <image class="arrow" src="../../images/icons/arrow.svg" mode="aspectFit"></image>
     </view>
-    
-    <view class="menu-item" bindtap="gotoSign">
-      <image class="menu-icon" src="../../images/icons/sign.png" mode="aspectFit"></image>
-      <text class="menu-text">课程签到</text>
-      <image class="arrow" src="../../images/icons/arrow.svg" mode="aspectFit"></image>
-    </view>
-    
-    
     
   </view>
 
   <!-- 设置和退出 -->
   <view class="settings-section">
-    <view class="menu-item" bindtap="gotoContact">
-      <image class="menu-icon" src="../../images/icons/contact.png" mode="aspectFit"></image>
-      <text class="menu-text">联系我们</text>
+    <view class="menu-item contact-item" bindtap="gotoContact">
+      <image class="menu-icon contact-icon" src="../../images/icons/contact.png" mode="aspectFit"></image>
+      <text class="menu-text contact-text">联系我们</text>
       <image class="arrow" src="../../images/icons/arrow.svg" mode="aspectFit"></image>
     </view>
     
-    <view class="menu-item" bindtap="gotoAbout">
-      <image class="menu-icon" src="../../images/icons/about.png" mode="aspectFit"></image>
-      <text class="menu-text">关于我们</text>
-      <image class="arrow" src="../../images/icons/arrow.svg" mode="aspectFit"></image>
-    </view>
-    
-    <view wx:if="{{isLogin}}" class="menu-item logout" bindtap="handleLogout">
-      <image class="menu-icon" src="../../images/icons/logout.png" mode="aspectFit"></image>
-      <text class="menu-text">退出登录</text>
+    <view wx:if="{{isLogin}}" class="menu-item logout-item" bindtap="handleLogout">
+      <image class="menu-icon logout-icon" src="../../images/icons/logout.png" mode="aspectFit"></image>
+      <text class="menu-text logout-text">退出登录</text>
     </view>
   </view>
 </view>

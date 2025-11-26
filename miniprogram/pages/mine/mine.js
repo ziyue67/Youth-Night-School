@@ -186,11 +186,29 @@ Page({
   },
 
   gotoContact() {
-    navigateToPage('/pages/contact/contact');
-  },
-
-  gotoAbout() {
-    navigateToPage('/pages/about/about');
+    wx.showModal({
+      title: '联系我们',
+      content: '即将访问湖州职业技术学院官网',
+      success: (res) => {
+        if (res.confirm) {
+          wx.navigateTo({
+            url: '/pages/webview/webview?url=https://www.huvtc.edu.cn/'
+          }).catch(() => {
+            // 如果webview页面不存在，使用复制链接的方式
+            wx.setClipboardData({
+              data: 'https://www.huvtc.edu.cn/',
+              success: () => {
+                wx.showToast({
+                  title: '链接已复制，请在浏览器中打开',
+                  icon: 'none',
+                  duration: 3000
+                });
+              }
+            });
+          });
+        }
+      }
+    });
   },
 
   // 退出登录
