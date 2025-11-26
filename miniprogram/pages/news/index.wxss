@@ -1,5 +1,5 @@
 /* pages/news/index.wxss */
-@import 'index-wxa-auto-dark.wxss'
+@import 'index-wxa-auto-dark.wxss';
 
 /* 新闻列表 */
 .news-list {
