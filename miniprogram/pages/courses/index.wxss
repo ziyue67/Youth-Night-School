@@ -1,152 +1,509 @@
-/* 课程页面样式 */
+/* 课程页面样式 - 统一优化版本 */
+page {
+  background: linear-gradient(180deg, #f8f9fa 0%, #e9ecef 100%);
+}
 
 /* 顶部标题栏 */
 .header {
   display: flex;
   align-items: center;
-  height: 120rpx;
-  background-color: white;
-  border-bottom: 1rpx solid #e0e0e0;
-  padding: 0 20rpx;
+  height: 140rpx;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-bottom: none;
+  padding: 0 30rpx;
   flex-wrap: wrap;
   align-content: center;
+  box-shadow: 0 8rpx 30rpx rgba(102, 126, 234, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 200%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  animation: headerShimmer 4s infinite;
+}
+
+@keyframes headerShimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
 }
 
 .header-left {
-  background-color: #4CAF50;
-  padding: 8rpx 16rpx;
-  border-radius: 20rpx;
-  margin-right: 15rpx;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10rpx);
+  padding: 12rpx 20rpx;
+  border-radius: 25rpx;
+  margin-right: 20rpx;
   flex-shrink: 0;
+  border: 1rpx solid rgba(255, 255, 255, 0.3);
+  transition: all 0.3s ease;
+}
+
+.header-left:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: scale(1.05);
 }
 
 .college-name {
   color: white;
-  font-size: 20rpx;
-  font-weight: bold;
+  font-size: 22rpx;
+  font-weight: 700;
   white-space: nowrap;
+  text-shadow: 0 2rpx 4rpx rgba(0, 0, 0, 0.3);
+  letter-spacing: 0.5rpx;
 }
 
 .page-title {
-  font-size: 28rpx;
-  font-weight: bold;
-  color: #333;
+  font-size: 32rpx;
+  font-weight: 700;
+  color: white;
   flex: 1;
   line-height: 1.3;
+  text-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.3);
+  letter-spacing: 1rpx;
 }
 
 /* 内容区域 */
 .content {
   display: flex;
   flex: 1;
+  height: calc(100vh - 140rpx);
+  overflow: hidden;
 }
 
 /* 左侧导航栏 */
 .sidebar {
   width: 200rpx;
-  background-color: #f8f8f8;
-  border-right: 1rpx solid #e0e0e0;
+  background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 100%);
+  border-right: 1rpx solid rgba(0, 0, 0, 0.05);
   padding: 20rpx 0;
+  box-shadow: 4rpx 0 20rpx rgba(0, 0, 0, 0.05);
+  position: relative;
+  overflow: hidden;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 1rpx;
+  height: 100%;
+  background: linear-gradient(180deg, transparent, rgba(102, 126, 234, 0.3), transparent);
 }
 
 .nav-item {
-  padding: 30rpx 20rpx;
-  margin: 10rpx 0;
-  background-color: #f0f0f0;
+  width: 200rpx;
+  margin: 8rpx auto;
+  padding: 20rpx 16rpx;
+  background: linear-gradient(145deg, #f8f9fa 0%, #ffffff 100%);
   border-left: 4rpx solid transparent;
   font-size: 24rpx;
-  color: #666;
+  color: #5a6c7d;
   text-align: center;
+  border-radius: 16rpx;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
+  font-weight: 500;
+  letter-spacing: 0.5rpx;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.nav-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(102, 126, 234, 0.1), transparent);
+  transition: left 0.5s ease;
+}
+
+.nav-item:hover::before {
+  left: 100%;
+}
+
+.nav-item:hover {
+  transform: translateX(8rpx);
+  box-shadow: 0 4rpx 15rpx rgba(102, 126, 234, 0.15);
+  color: #667eea;
 }
 
 .nav-item.active {
-  background-color: white;
-  border-left-color: #4CAF50;
-  color: #4CAF50;
-  font-weight: bold;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-left-color: transparent;
+  color: white;
+  font-weight: 700;
+  box-shadow: 0 6rpx 20rpx rgba(102, 126, 234, 0.3);
+  transform: translateX(4rpx);
+  text-shadow: 0 2rpx 4rpx rgba(0, 0, 0, 0.2);
 }
 
 /* 右侧主要内容 */
 .main-content {
   flex: 1;
   padding: 20rpx;
-  background-color: white;
+  background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 100%);
+  position: relative;
+}
+
+/* 搜索区域 */
+.search-section {
+  margin-bottom: 24rpx;
+}
+
+/* 信息卡片 */
+.info-card {
+  margin-bottom: 24rpx;
+}
+
+/* 月份区域 */
+.month-section {
+  margin-bottom: 24rpx;
+}
+
+.course-section {
+  margin-bottom: 24rpx;
+}
+
+/* 区域标题 */
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16rpx;
+  padding: 0 10rpx;
+}
+
+.section-title {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #2c3e50;
+  letter-spacing: 0.5rpx;
+}
+
+.course-total {
+  font-size: 24rpx;
+  color: #667eea;
+  font-weight: 500;
+  background: rgba(102, 126, 234, 0.1);
+  padding: 6rpx 12rpx;
+  border-radius: 16rpx;
+  border: 1rpx solid rgba(102, 126, 234, 0.2);
+}
+
+.result-count {
+  font-size: 24rpx;
+  color: #667eea;
+  font-weight: 500;
+  background: rgba(102, 126, 234, 0.1);
+  padding: 6rpx 12rpx;
+  border-radius: 16rpx;
+  border: 1rpx solid rgba(102, 126, 234, 0.2);
+}
+
+/* 课程内容区域 */
+.course-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.detail-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 6rpx;
+}
+
+.detail-label {
+  font-size: 24rpx;
+  color: #7f8c8d;
+  font-weight: 500;
+  margin-right: 8rpx;
+  min-width: 60rpx;
+}
+
+.detail-value {
+  font-size: 26rpx;
+  color: #5a6c7d;
+  font-weight: 500;
+  flex: 1;
+}
+
+/* 搜索结果内容 */
+.result-content {
+  display: flex;
+  flex-direction: column;
+  padding: 16rpx 20rpx;
+}
+
+.result-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12rpx;
+  margin-top: 8rpx;
+}
+
+.meta-item {
+  font-size: 22rpx;
+  color: #7f8c8d;
+  font-weight: 500;
+  background: rgba(127, 140, 141, 0.1);
+  padding: 4rpx 8rpx;
+  border-radius: 8rpx;
+}
+
+/* 空状态图标 */
+.empty-icon {
+  font-size: 60rpx;
+  margin-bottom: 16rpx;
+}
+
+.empty-title {
+  font-size: 32rpx;
+  color: #95a5a6;
+  font-weight: 600;
+  margin-bottom: 8rpx;
+}
+
+.empty-desc {
+  font-size: 26rpx;
+  color: #bdc3c7;
+  margin-top: 8rpx;
+}
+
+/* 学院信息区域 */
+.current-college-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20rpx 30rpx;
+  margin-bottom: 24rpx;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.05));
+  border-radius: 20rpx;
+  border-left: 4rpx solid #667eea;
+  backdrop-filter: blur(10rpx);
+}
+
+.college-title {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #2c3e50;
+  letter-spacing: 1rpx;
+}
+
+.course-count {
+  font-size: 24rpx;
+  color: #667eea;
+  font-weight: 500;
+  background: rgba(102, 126, 234, 0.1);
+  padding: 8rpx 16rpx;
+  border-radius: 20rpx;
+  border: 1rpx solid rgba(102, 126, 234, 0.2);
 }
 
 /* 月份滑块 */
 .month-tabs {
   white-space: nowrap;
-  margin: 10rpx 0 20rpx;
+  margin: 0 0 30rpx;
+  padding: 0 10rpx;
+  position: relative;
 }
+
 .month-tab {
   display: inline-block;
-  padding: 12rpx 20rpx;
-  margin-right: 12rpx;
-  border: 1rpx solid #e0e0e0;
-  border-radius: 24rpx;
-  font-size: 24rpx;
-  color: #666;
-  background-color: #f9f9f9;
+  padding: 16rpx 28rpx;
+  margin-right: 16rpx;
+  border: 2rpx solid rgba(102, 126, 234, 0.2);
+  border-radius: 30rpx;
+  font-size: 28rpx;
+  color: #5a6c7d;
+  background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
+  font-weight: 500;
+  letter-spacing: 0.5rpx;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  box-shadow: 0 4rpx 15rpx rgba(0, 0, 0, 0.05);
+  position: relative;
+  overflow: hidden;
 }
+
+.month-tab::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(102, 126, 234, 0.1), transparent);
+  transition: left 0.5s ease;
+}
+
+.month-tab:hover::before {
+  left: 100%;
+}
+
+.month-tab:hover {
+  transform: translateY(-2rpx);
+  box-shadow: 0 6rpx 20rpx rgba(102, 126, 234, 0.15);
+  border-color: rgba(102, 126, 234, 0.4);
+  color: #667eea;
+}
+
 .month-tab.active {
-  border-color: #4CAF50;
-  color: #4CAF50;
-  background-color: #e8f5e8;
+/* 课程列表 */
+.course-list {
+  width: 100%;
+  height: calc(100vh - 500rpx);
+  overflow-y: auto;
 }
-.month-empty { color: #999; font-size: 24rpx; }
+  border-color: transparent;
+  color: white;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  box-shadow: 0 8rpx 25rpx rgba(102, 126, 234, 0.3);
+  transform: translateY(-2rpx);
+  text-shadow: 0 2rpx 4rpx rgba(0, 0, 0, 0.2);
+}
+
+.month-empty { 
+  color: #95a5a6; 
+  font-size: 28rpx; 
+  font-weight: 500;
+  padding: 20rpx;
+  text-align: center;
+  background: rgba(149, 165, 166, 0.1);
+  border-radius: 16rpx;
+  margin: 20rpx auto;
+  width: fit-content;
+}
 
 /* 搜索框 */
 .search-box {
   display: flex;
   align-items: center;
-  background-color: #f5f5f5;
-  border-radius: 25rpx;
-  padding: 0 20rpx;
-  margin-bottom: 20rpx;
+  background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
+  border-radius: 30rpx;
+  padding: 0 30rpx;
+  margin-bottom: 30rpx;
+  box-shadow: 0 8rpx 30rpx rgba(0, 0, 0, 0.06);
+  border: 2rpx solid rgba(102, 126, 234, 0.1);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.search-box:focus-within {
+  border-color: #667eea;
+  box-shadow: 0 12rpx 40rpx rgba(102, 126, 234, 0.15);
+  transform: translateY(-2rpx);
 }
 
 .search-input {
   flex: 1;
-  height: 60rpx;
+  height: 70rpx;
   border: none;
   background: transparent;
-  font-size: 28rpx;
+  font-size: 30rpx;
+  color: #2c3e50;
+  font-weight: 500;
+  letter-spacing: 0.5rpx;
+}
+
+.search-input::placeholder {
+  color: #95a5a6;
+  font-weight: 400;
 }
 
 .search-icon {
-  color: #999;
-  font-size: 28rpx;
-  margin-left: 10rpx;
+  color: #667eea;
+  font-size: 30rpx;
+  margin-left: 15rpx;
+  font-weight: 500;
+  background: rgba(102, 126, 234, 0.1);
+  padding: 8rpx 12rpx;
+  border-radius: 12rpx;
+  transition: all 0.3s ease;
 }
 
-/* 课程表图片 */
-.course-table {
-  width: 100%;
-  margin-bottom: 20rpx;
-}
-
-.course-image {
-  width: 100%;
-  border-radius: 10rpx;
-  box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.1);
+.search-box:focus-within .search-icon {
+  background: rgba(102, 126, 234, 0.2);
+  transform: scale(1.05);
 }
 
 /* 课程列表 */
 .course-list {
   width: 100%;
+  max-height: calc(100vh - 400rpx);
 }
 
 .course-item {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  padding: 20rpx;
-  border-bottom: 1rpx solid #f0f0f0;
+  align-items: flex-start;
+  padding: 30rpx;
+  margin-bottom: 20rpx;
+  background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
+  border-radius: 20rpx;
+  box-shadow: 0 6rpx 25rpx rgba(0, 0, 0, 0.06);
+  border: 1rpx solid rgba(0, 0, 0, 0.03);
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  position: relative;
+  overflow: hidden;
+}
+
+.course-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 5rpx;
+  background: linear-gradient(180deg, #667eea, #764ba2);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  border-radius: 20rpx 0 0 20rpx;
+}
+
+.course-item:hover {
+  transform: translateY(-4rpx);
+  box-shadow: 0 12rpx 40rpx rgba(0, 0, 0, 0.1);
 }
 
 .course-item.highlight {
-  background-color: #fffbe6;
-  border-left: 6rpx solid #FFB300;
+  background: linear-gradient(145deg, #fffbeb 0%, #fff8e7 100%);
+  border-color: rgba(255, 179, 0, 0.3);
+  box-shadow: 0 8rpx 30rpx rgba(255, 179, 0, 0.2);
+  animation: highlightPulse 2s ease-in-out;
+}
+
+.course-item.highlight::before {
+  opacity: 1;
+  background: linear-gradient(180deg, #FFB300, #FF6F00);
+}
+
+@keyframes highlightPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+}
+
+.course-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16rpx;
 }
 
 .course-info {
@@ -155,54 +512,160 @@
 
 .course-name {
   display: block;
-  font-size: 28rpx;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 10rpx;
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 12rpx;
+  line-height: 1.3;
+  letter-spacing: 0.5rpx;
+}
+
+.course-details {
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
 }
 
 .course-time {
-  display: block;
-  font-size: 24rpx;
-  color: #666;
-  margin-bottom: 5rpx;
+  display: flex;
+  align-items: center;
+  font-size: 26rpx;
+  color: #5a6c7d;
+  font-weight: 500;
 }
 
-.course-teacher {
-  display: block;
-  font-size: 24rpx;
-  color: #999;
-}
-
-.course-status {
-  padding: 5rpx 15rpx;
-  border-radius: 15rpx;
+.course-time::before {
+  content: '🕐';
+  margin-right: 8rpx;
   font-size: 20rpx;
 }
 
+.course-teacher {
+  display: flex;
+  align-items: center;
+  font-size: 26rpx;
+  color: #7f8c8d;
+  font-weight: 500;
+}
+
+.course-teacher::before {
+  content: '👨‍🏫';
+  margin-right: 8rpx;
+  font-size: 20rpx;
+}
+
+.course-status {
+  padding: 8rpx 20rpx;
+  border-radius: 20rpx;
+  font-size: 22rpx;
+  font-weight: 600;
+  letter-spacing: 0.5rpx;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.1);
+  flex-shrink: 0;
+}
+
 .course-status.available {
-  background-color: #e8f5e8;
-  color: #4CAF50;
+  background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+  color: white;
+  text-shadow: 0 1rpx 2rpx rgba(0, 0, 0, 0.2);
 }
 
 .course-status.full {
-  background-color: #ffe8e8;
-  color: #f44336;
+  background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
+  color: white;
+  text-shadow: 0 1rpx 2rpx rgba(0, 0, 0, 0.2);
 }
 
-.search-results {
+/* 空状态 */
+.empty-state {
+  text-align: center;
+  padding: 80rpx 40rpx;
+  background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
+  border-radius: 20rpx;
+  margin: 40rpx 20rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.05);
+}
+
+.empty-state text {
+  font-size: 30rpx;
+  color: #95a5a6;
+  font-weight: 500;
+  letter-spacing: 0.5rpx;
+}
+
+.empty-subtitle {
+  font-size: 26rpx;
+  color: #bdc3c7;
   margin-top: 12rpx;
-  background: #fff;
-  border: 1rpx solid #eee;
-  border-radius: 12rpx;
-  box-shadow: 0 6rpx 20rpx rgba(0,0,0,0.06);
+  font-weight: 400;
 }
+
+/* 搜索结果 */
+.search-results {
+  margin-top: 20rpx;
+  background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
+  border: 2rpx solid rgba(102, 126, 234, 0.1);
+  border-radius: 20rpx;
+  box-shadow: 0 8rpx 30rpx rgba(0, 0, 0, 0.08);
+  max-height: 400rpx;
+  overflow-y: auto;
+}
+
 .search-result-item {
-  padding: 16rpx 20rpx;
-  border-bottom: 1rpx solid #f7f7f7;
+  padding: 20rpx 30rpx;
+  border-bottom: 1rpx solid rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
 }
-.search-result-item:last-child { border-bottom: none; }
-.result-title { font-size: 28rpx; color: #333; font-weight: 600; }
-.result-meta { display:block; font-size: 24rpx; color: #888; margin-top: 6rpx; }
+
+.search-result-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4rpx;
+  background: linear-gradient(180deg, #667eea, #764ba2);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.search-result-item:hover {
+  background: rgba(102, 126, 234, 0.05);
+  transform: translateX(8rpx);
+}
+
+.search-result-item:hover::before {
+  opacity: 1;
+}
+
+.search-result-item:last-child { 
+  border-bottom: none; 
+}
+
+.result-title { 
+  font-size: 30rpx; 
+  color: #2c3e50; 
+  font-weight: 600; 
+  letter-spacing: 0.5rpx;
+  margin-bottom: 8rpx;
+}
+
+.result-meta { 
+  display: flex;
+  align-items: center;
+  font-size: 24rpx; 
+  color: #7f8c8d; 
+  font-weight: 500;
+}
+
+.result-meta::before {
+  content: '📍';
+  margin-right: 6rpx;
+  font-size: 18rpx;
+}
 
 @import 'index-wxa-auto-dark.wxss'

@@ -5,7 +5,7 @@
       <text class="college-name">{{currentCollege}}</text>
     </view>
     <view class="header-right">
-      <text class="page-title">青春夜校课程安排</text>
+      <text class="page-title">📚 青春夜校课程安排</text>
     </view>
   </view>
 
@@ -15,84 +15,135 @@
       <view class="nav-item {{currentCollege === '建筑工程学院' ? 'active' : ''}}" 
             bindtap="switchCollege" 
             data-college="建筑工程学院">
-        <text>建筑工程学院</text>
+        <text>🏗 建筑工程学院</text>
       </view>
       <view class="nav-item {{currentCollege === '智能制造与电梯学院' ? 'active' : ''}}" 
             bindtap="switchCollege" 
             data-college="智能制造与电梯学院">
-        <text>智能制造与电梯学院</text>
+        <text>🏭 智能制造与电梯学院</text>
       </view>
       <view class="nav-item {{currentCollege === '新能源工程与汽车学院' ? 'active' : ''}}" 
             bindtap="switchCollege" 
             data-college="新能源工程与汽车学院">
-        <text>新能源工程与汽车学院</text>
+        <text>🚗 新能源工程与汽车学院</text>
       </view>
       <view class="nav-item {{currentCollege === '信息工程与物联网学院' ? 'active' : ''}}" 
             bindtap="switchCollege" 
             data-college="信息工程与物联网学院">
-        <text>信息工程与物联网学院</text>
+        <text>💻 信息工程与物联网学院</text>
       </view>
       <view class="nav-item {{currentCollege === '经济管理与电商学院' ? 'active' : ''}}" 
             bindtap="switchCollege" 
             data-college="经济管理与电商学院">
-        <text>经济管理与电商学院</text>
+        <text>📊 经济管理与电商学院</text>
       </view>
       <view class="nav-item {{currentCollege === '旅游管理学院' ? 'active' : ''}}" 
             bindtap="switchCollege" 
             data-college="旅游管理学院">
-        <text>旅游管理学院</text>
+        <text>✈️ 旅游管理学院</text>
       </view>
       <view class="nav-item {{currentCollege === '艺术设计与时尚创意学院' ? 'active' : ''}}" 
             bindtap="switchCollege" 
             data-college="艺术设计与时尚创意学院">
-        <text>艺术设计与时尚创意学院</text>
+        <text>🎨 艺术设计与时尚创意学院</text>
       </view>
       <view class="nav-item {{currentCollege === '社会发展与公共教育学院' ? 'active' : ''}}" 
             bindtap="switchCollege" 
             data-college="社会发展与公共教育学院">
-        <text>社会发展与公共教育学院</text>
+        <text>👥 社会发展与公共教育学院</text>
       </view>
     </view>
 
     <!-- 右侧课程内容 -->
     <view class="main-content">
-    <view class="search-box">
-      <input class="search-input" placeholder="搜索课程标题（跨学院）" confirm-type="search" bindconfirm="onSearchConfirm" bindinput="onSearchInput" value="{{searchKeyword}}" />
-      <text class="search-icon">搜索</text>
-    </view>
-    <view class="current-college-info">
-      <text class="college-title">{{currentCollege}}</text>
-      <text class="course-count">{{courses.length}} 门课程</text>
-    </view>
+      <!-- 搜索框 -->
+      <view class="search-section">
+        <view class="search-box">
+          <input class="search-input" placeholder="🔍 搜索课程标题（跨学院）" confirm-type="search" bindconfirm="onSearchConfirm" bindinput="onSearchInput" value="{{searchKeyword}}" />
+          <text class="search-icon">搜索</text>
+        </view>
+      </view>
+      
+      <!-- 学院信息卡片 -->
+      <view class="info-card">
+        <view class="college-info">
+          <text class="college-title">🏫 {{currentCollege}}</text>
+          <text class="course-count">📚 {{courses.length}} 门课程</text>
+        </view>
+      </view>
 
-    <!-- 月份滑块 -->
-    <scroll-view scroll-x class="month-tabs">
-      <view class="month-tab {{currentMonth===item? 'active' : ''}}" wx:for="{{months}}" wx:key="month" data-month="{{item}}" bindtap="onMonthTap">{{item}}月</view>
-      <view wx:if="{{months.length===0}}" class="month-empty">暂无月份</view>
-    </scroll-view>
+      <!-- 月份选择器 -->
+      <view class="month-section">
+        <view class="section-header">
+          <text class="section-title">📅 课程月份</text>
+        </view>
+        <scroll-view scroll-x class="month-tabs">
+          <view class="month-tab {{currentMonth===item? 'active' : ''}}" wx:for="{{months}}" wx:key="month" data-month="{{item}}" bindtap="onMonthTap">
+            <text>{{item}}月</text>
+          </view>
+          <view wx:if="{{months.length===0}}" class="month-empty">
+            <text>📅 暂无月份安排</text>
+          </view>
+        </scroll-view>
+      </view>
 
-      <scroll-view class="course-list" scroll-y="true" scroll-into-view="{{scrollTarget}}">
-        <view id="course-item-{{item.id}}" class="course-item {{highlightCourseId===item.id ? 'highlight' : ''}}" wx:for="{{courses}}" wx:key="id">
-          <view class="course-header">
-            <text class="course-name">{{item.name}}</text>
-            <text class="course-status {{item.status}}">{{item.status}}</text>
-          </view>
-          <view class="course-details">
-            <text class="course-time">时间：{{item.time}}</text>
-            <text class="course-teacher">教师：{{item.teacher}}</text>
-          </view>
+      <!-- 课程列表 -->
+      <view class="course-section">
+        <view class="section-header">
+          <text class="section-title">📋 课程列表</text>
+          <text class="course-total">共 {{courses.length}} 门</text>
         </view>
         
-        <view wx:if="{{courses.length === 0}}" class="empty-state">
-          <text>暂无{{currentCollege}} {{currentMonth}} 月的课程</text>
-        </view>
-      </scroll-view>
+        <scroll-view class="course-list" scroll-y="true" scroll-into-view="{{scrollTarget}}">
+          <view id="course-item-{{item.id}}" class="course-item {{highlightCourseId===item.id ? 'highlight' : ''}}" wx:for="{{courses}}" wx:key="id">
+            <view class="course-content">
+              <view class="course-header">
+                <text class="course-name">{{item.name}}</text>
+                <view class="course-status {{item.status}}">
+                  <text>{{item.status === 'available' ? '可报名' : '已满员'}}</text>
+                </view>
+              </view>
+              <view class="course-details">
+                <view class="detail-item">
+                  <text class="detail-label">时间</text>
+                  <text class="detail-value">{{item.time}}</text>
+                </view>
+                <view class="detail-item">
+                  <text class="detail-label">教师</text>
+                  <text class="detail-value">{{item.teacher}}</text>
+                </view>
+              </view>
+            </view>
+          </view>
+          
+          <!-- 空状态 -->
+          <view wx:if="{{courses.length === 0}}" class="empty-state">
+            <view class="empty-icon">📚</view>
+            <text class="empty-title">暂无课程安排</text>
+            <text class="empty-subtitle">{{currentCollege}} {{currentMonth}} 月暂无开放课程</text>
+            <text class="empty-desc">敬请期待更多精彩课程</text>
+          </view>
+        </scroll-view>
+      </view>
 
-      <view wx:if="{{searchResults.length>0}}" class="search-results">
-        <view class="search-result-item" wx:for="{{searchResults}}" wx:key="id" bindtap="applySearchChoice" data-college="{{item.college}}" data-month="{{item.month}}" data-id="{{item.id}}">
-          <text class="result-title">{{item.name}}</text>
-          <text class="result-meta">{{item.college}} · {{item.month}}月 · {{item.time}}</text>
+      <!-- 搜索结果 -->
+      <view wx:if="{{searchResults.length>0}}" class="search-section">
+        <view class="section-header">
+          <text class="section-title">🔍 搜索结果</text>
+          <text class="result-count">找到 {{searchResults.length}} 个结果</text>
         </view>
+        <scroll-view class="search-results" scroll-y="true">
+          <view class="search-result-item" wx:for="{{searchResults}}" wx:key="id" bindtap="applySearchChoice" data-college="{{item.college}}" data-month="{{item.month}}" data-id="{{item.id}}">
+            <view class="result-content">
+              <text class="result-title">{{item.name}}</text>
+              <view class="result-meta">
+                <text class="meta-item">🏫 {{item.college}}</text>
+                <text class="meta-item">📅 {{item.month}}月</text>
+                <text class="meta-item">🕐 {{item.time}}</text>
+              </view>
+            </view>
+          </view>
+        </scroll-view>
       </view>
     </view>
   </view>
