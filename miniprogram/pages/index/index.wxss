@@ -105,7 +105,7 @@ page {
   border-radius: 20rpx;
 }
 
-/* ���»/�γ��Ƽ��� */
+/* 近期动态推荐区 */
 .activity-section {
   width: 100%;
   padding: 40rpx 0;
@@ -132,45 +132,130 @@ page {
   color: #888;
 }
 
-.activity-scroll {
-  width: 100%;
-  white-space: nowrap;
+/* 动态列表样式 */
+.news-list {
   padding: 0 40rpx;
 }
 
-.activity-card {
-  display: inline-block;
-  width: 300rpx;
-  background-color: white;
-  border: 1rpx solid #E0E0E0;
-  border-radius: 10rpx;
-  margin-right: 20rpx;
+.news-item {
+  background-color: #fff;
+  border-radius: 16rpx;
+  padding: 30rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.08);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  transition: all 0.3s ease;
+  position: relative;
   overflow: hidden;
+  margin-bottom: 20rpx;
 }
 
-.activity-image {
-  width: 100%;
-  height: 150rpx;
+.news-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 6rpx;
+  background: linear-gradient(180deg, #667eea, #764ba2);
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
-.activity-info {
-  padding: 20rpx;
+.news-item.wechat::before {
+  opacity: 1;
 }
 
-.activity-name {
-  display: block;
-  font-size: 28rpx;
-  font-weight: bold;
-  color: #000;
-  margin-bottom: 10rpx;
+.news-item:active {
+  transform: scale(0.98);
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.15);
 }
 
-.activity-time,
-.activity-location {
-  display: block;
+.news-content {
+  flex: 1;
+  padding-right: 20rpx;
+}
+
+.news-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 12rpx;
+  line-height: 1.4;
+  letter-spacing: 0.5rpx;
+}
+
+.news-date {
   font-size: 24rpx;
+  color: #999;
+  margin-bottom: 8rpx;
+}
+
+.news-description {
+  font-size: 26rpx;
   color: #666;
-  margin-bottom: 5rpx;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.news-image {
+  margin-left: 20rpx;
+  flex-shrink: 0;
+}
+
+.wechat-logo {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 12rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.1);
+}
+
+/* 加载状态 */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60rpx 40rpx;
+}
+
+.loading-spinner {
+  width: 40rpx;
+  height: 40rpx;
+  border: 4rpx solid #f3f3f3;
+  border-top: 4rpx solid #1E88E5;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 20rpx;
+}
+
+.loading-text {
+  font-size: 28rpx;
+  color: #666;
+}
+
+/* 空状态 */
+.empty-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60rpx 40rpx;
+}
+
+.empty-text {
+  font-size: 28rpx;
+  color: #999;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 /* ��Ŀ����� */

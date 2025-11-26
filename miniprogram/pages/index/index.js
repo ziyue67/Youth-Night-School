@@ -1,36 +1,55 @@
-const { COLLEGES, navigateToPage, storage } = require('../../utils/common');
+const { COLLEGES, navigateToPage, storage, callCloudFunction, formatDate } = require('../../utils/common');
 
 // 首页逻辑 - 优化后减少冗余
 Page({
   data: {
     currentTab: 0,
-    recentCourses: [
-      {
-        id: 1,
-        name: "高数答疑",
-        time: "周一 19:30-21:00",
-        location: "教学楼A305",
-        image: "../../images/ai_example1.png"
-      },
-      {
-        id: 2,
-        name: "摄影入门",
-        time: "周三 19:00-20:30",
-        location: "艺术楼B102",
-        image: "../../images/ai_example2.png"
-      },
-      {
-        id: 3,
-        name: "英语口语",
-        time: "周五 19:30-21:00",
-        location: "外语楼C203",
-        image: "../../images/cloud_dev.png"
-      }
-    ]
+    recentNews: [], // 存储前3条动态文章
+    loading: true
   },
 
   onLoad() {
     console.log("=== 首页加载 ===");
+    this.loadRecentNews();
+  },
+
+  // 加载近期动态文章
+  async loadRecentNews() {
+    try {
+      const res = await callCloudFunction('getLocalWechatArticles', {}, false);
+      
+      if (res.result && res.result.success) {
+        const newsList = res.result.data.map(article => ({
+          id: article._id || article.id,
+          title: article.title,
+          date: formatDate(article.publish_time),
+          type: "wechat",
+          url: article.link,
+          description: article.title,
+          image: "/images/icons/customer-service.svg"
+        }));
+        
+        // 只取前3条
+        const recentNews = newsList.slice(0, 3);
+        
+        this.setData({
+          recentNews,
+          loading: false
+        });
+      } else {
+        console.error('获取动态文章失败:', res.result?.error || '未知错误');
+        this.setData({
+          recentNews: [],
+          loading: false
+        });
+      }
+    } catch (err) {
+      console.error('云函数调用失败:', err);
+      this.setData({
+        recentNews: [],
+        loading: false
+      });
+    }
   },
 
   // 学院卡片点击事件 - 使用通用函数优化
@@ -57,9 +76,24 @@ Page({
     storage.set('collegeTimestamp', Date.now());
   },
 
-  // 更多按钮点击事件 - 使用通用函数
+  // 更多按钮点击事件 - 跳转到动态页面
   onMoreTap() {
-    navigateToPage("/pages/courses/index", 'switchTab:/pages/courses/index');
+    navigateToPage("/pages/news/index", 'switchTab:/pages/news/index');
+  },
+
+  // 动态文章点击事件
+  onNewsTap(e) {
+    const { item } = e.currentTarget.dataset;
+    
+    if (item.type === 'wechat') {
+      const url = `/pages/webview/index?url=${encodeURIComponent(item.url)}&title=${encodeURIComponent(item.title)}`;
+      navigateToPage(url);
+    } else {
+      wx.showToast({
+        title: '功能开发中',
+        icon: 'none'
+      });
+    }
   },
 
   // 关于我们按钮点击事件 - 使用通用函数

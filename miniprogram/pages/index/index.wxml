@@ -58,22 +58,37 @@
     </view>
   </view>
 
-  <!-- 最新活动/课程推荐区 -->
+  <!-- 近期动态推荐区 -->
   <view class="activity-section">
     <view class="section-header">
       <text class="section-title-left">近期精彩</text>
       <text class="section-more" bindtap="onMoreTap">更多→</text>
     </view>
-    <scroll-view class="activity-scroll" scroll-x="true">
-      <view class="activity-card" wx:for="{{recentCourses}}" wx:key="id">
-        <image class="activity-image" src="{{item.image}}" mode="aspectFill"></image>
-        <view class="activity-info">
-          <text class="activity-name">{{item.name}}</text>
-          <text class="activity-time">{{item.time}}</text>
-          <text class="activity-location">{{item.location}}</text>
+    
+    <!-- 加载状态 -->
+    <view wx:if="{{loading}}" class="loading-container">
+      <view class="loading-spinner"></view>
+      <text class="loading-text">正在加载动态...</text>
+    </view>
+    
+    <!-- 动态列表 -->
+    <view wx:elif="{{recentNews.length > 0}}" class="news-list">
+      <view class="news-item {{item.type}}" wx:for="{{recentNews}}" wx:key="id" bindtap="onNewsTap" data-item="{{item}}">
+        <view class="news-content">
+          <view class="news-title">{{item.title}}</view>
+          <view class="news-date">{{item.date}}</view>
+          <view wx:if="{{item.description}}" class="news-description">{{item.description}}</view>
+        </view>
+        <view class="news-image" wx:if="{{item.type === 'wechat'}}">
+          <image src="{{item.image}}" mode="aspectFit" class="wechat-logo"></image>
         </view>
       </view>
-    </scroll-view>
+    </view>
+    
+    <!-- 空状态 -->
+    <view wx:else class="empty-container">
+      <text class="empty-text">暂无动态</text>
+    </view>
   </view>
 
   <!-- 项目简介区 -->
