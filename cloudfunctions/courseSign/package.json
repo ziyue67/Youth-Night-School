@@ -1,0 +1,10 @@
+{
+  "name": "courseSign",
+  "version": "1.0.0",
+  "description": "课程签到",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3",
+    "mysql2": "^2.3.3"
+  }
+}
