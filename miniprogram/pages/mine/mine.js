@@ -216,8 +216,8 @@ Page({
         storage.set('userInfo', info);
         storage.set('lastSignDate', signedToday ? today : '');
         storage.set('signRecord', signRecord);
-        
-        this.setData({ points, signRecord, signedToday });
+
+        this.setData({ points, signRecord: signRecord.slice(-6), signedToday });
         return;
       }
     } catch (e) {

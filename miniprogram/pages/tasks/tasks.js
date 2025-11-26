@@ -35,7 +35,7 @@ Page({
   async loadSignRecord() {
     try {
       const record = wx.getStorageSync('signRecord') || [];
-      this.setData({ signRecord: record.slice(-7) }); // 只显示最近7条
+      this.setData({ signRecord: record.slice(-6) }); // 只显示最近6条
     } catch (error) {
       console.error('加载签到记录失败:', error);
     }
@@ -81,11 +81,11 @@ Page({
           time: new Date().toLocaleString()
         });
         wx.setStorageSync('signRecord', signRecord.slice(0, 30)); // 保留最近30条
-
+        
         // 更新页面数据
         this.setData({
           signedToday: true,
-          signRecord: signRecord.slice(-7)
+          signRecord: signRecord.slice(-6)
         });
 
         wx.showToast({
@@ -143,7 +143,7 @@ Page({
         const info = wx.getStorageSync('userInfo') || {};
         info.points = res.result.points || 0;
         wx.setStorageSync('userInfo', info);
-        this.setData({ signedToday: !!res.result.signedToday, signRecord: record.slice(-7) });
+        this.setData({ signedToday: !!res.result.signedToday, signRecord: record.slice(-6) });
       }
     } catch {}
   }

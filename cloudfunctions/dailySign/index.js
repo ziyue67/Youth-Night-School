@@ -41,7 +41,7 @@ exports.main = async (event, context) => {
         points = urows[0].points || 0;
       }
       const [signedRows] = await conn.execute('SELECT id FROM sign_logs WHERE openid=? AND sign_date=?', [openid, today]);
-      const [logs] = await conn.execute('SELECT sign_date AS date, points FROM sign_logs WHERE openid=? ORDER BY created_at DESC LIMIT 30', [openid]);
+      const [logs] = await conn.execute('SELECT sign_date AS date, points FROM sign_logs WHERE openid=? ORDER BY created_at DESC LIMIT 6', [openid]);
       await conn.end();
       return {
         success: true,
