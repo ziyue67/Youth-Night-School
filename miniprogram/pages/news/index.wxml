@@ -36,4 +36,11 @@
   <view class="refresh-tip" wx:if="{{!loading && wechatArticles.length > 0}}">
     <text class="refresh-text">✨ 已为您加载 {{wechatArticles.length}} 篇精彩文章</text>
   </view>
+  
+  <!-- 回到顶部按钮 -->
+  <back-to-top
+    show="{{showBackToTop}}"
+    position="{{backToTopPosition}}"
+    bind:backToTop="onBackToTop"
+  />
 </view>

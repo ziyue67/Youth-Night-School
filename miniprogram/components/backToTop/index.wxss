@@ -1,0 +1,93 @@
+/* 回到顶部组件样式 */
+.back-to-top {
+  position: fixed;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(0.8) translateY(20rpx);
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  backdrop-filter: blur(5rpx);
+  border: 2rpx solid rgba(255, 255, 255, 0.2);
+}
+
+.back-to-top.show {
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1) translateY(0);
+}
+
+.back-to-top.animation {
+  animation: backToTopPulse 2s infinite;
+}
+
+.back-to-top.animating {
+  animation: backToTopRotate 0.5s ease-in-out;
+}
+
+.back-to-top-icon {
+  font-size: 32rpx;
+  font-weight: 700;
+  text-shadow: 0 2rpx 4rpx rgba(0, 0, 0, 0.2);
+  line-height: 1;
+}
+
+.loading-ring {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border: 4rpx solid rgba(255, 255, 255, 0.3);
+  border-top: 4rpx solid rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  animation: loadingRing 1s linear infinite;
+}
+
+/* 动画效果 */
+@keyframes backToTopPulse {
+  0%, 100% {
+    box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.2);
+  }
+  50% {
+    box-shadow: 0 6rpx 30rpx rgba(0, 0, 0, 0.3);
+  }
+}
+
+@keyframes backToTopRotate {
+  0% {
+    transform: scale(1) rotate(0deg);
+  }
+  100% {
+    transform: scale(1) rotate(360deg);
+  }
+}
+
+@keyframes loadingRing {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* 悬停效果（在小程序中通过active状态实现） */
+.back-to-top:active {
+  transform: scale(0.95);
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.3);
+}
+
+/* 暗色模式适配 */
+@media (prefers-color-scheme: dark) {
+  .back-to-top {
+    border: 2rpx solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.5);
+  }
+  
+  .back-to-top:active {
+    box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.7);
+  }
+}

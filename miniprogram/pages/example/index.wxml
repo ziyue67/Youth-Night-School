@@ -186,4 +186,11 @@
   </view>
 </block>
 
+<!-- 回到顶部按钮 -->
+<back-to-top
+  show="{{showBackToTop}}"
+  position="{{backToTopPosition}}"
+  bind:backToTop="onBackToTop"
+/>
+
 

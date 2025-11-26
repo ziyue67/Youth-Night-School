@@ -1,0 +1,8 @@
+<view
+  class="back-to-top {{show ? 'show' : ''}} {{animation ? 'animation' : ''}} {{isAnimating ? 'animating' : ''}}"
+  style="right: {{position.right}}rpx; bottom: {{position.bottom}}rpx; width: {{size}}rpx; height: {{size}}rpx; background-color: {{bgColor}}; color: {{color}};"
+  bindtap="backToTop"
+>
+  <view class="back-to-top-icon">{{icon}}</view>
+  <view wx:if="{{isAnimating}}" class="loading-ring"></view>
+</view>

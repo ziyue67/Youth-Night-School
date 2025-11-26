@@ -110,4 +110,11 @@
   </view>
 </view>
 
+<!-- 回到顶部按钮 -->
+<back-to-top
+  show="{{showBackToTop}}"
+  position="{{backToTopPosition}}"
+  bind:backToTop="onBackToTop"
+/>
+
 <!-- 底部导航栏 -->

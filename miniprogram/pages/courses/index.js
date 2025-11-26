@@ -11,7 +11,12 @@ Page({
     searchResults: [],
     scrollTarget: '',
     highlightCourseId: null,
-    colleges: COLLEGES // 使用常量
+    colleges: COLLEGES, // 使用常量
+    showBackToTop: false, // 控制回到顶部按钮显示
+    backToTopPosition: { // 回到顶部按钮位置
+      right: 30,
+      bottom: 100
+    }
   },
 
   onLoad(options) {
@@ -146,5 +151,21 @@ Page({
     setTimeout(() => {
       this.setData({ highlightCourseId: null });
     }, 2000);
+  },
+
+  // 页面滚动事件
+  onPageScroll(e) {
+    const scrollTop = e.scrollTop;
+    const showThreshold = 500; // 滚动超过500rpx显示按钮
+    
+    this.setData({
+      showBackToTop: scrollTop > showThreshold
+    });
+  },
+
+  // 回到顶部事件处理
+  onBackToTop() {
+    // 组件内部已经处理了滚动逻辑，这里只记录日志
+    console.log('回到顶部按钮被点击');
   }
 });

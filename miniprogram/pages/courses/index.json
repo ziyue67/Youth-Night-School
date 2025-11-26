@@ -1,5 +1,7 @@
 {
   "navigationBarTitleText": "课程安排",
-  "usingComponents": {},
+  "usingComponents": {
+    "back-to-top": "../../components/backToTop/index"
+  },
   "enablePullDownRefresh": false
 }

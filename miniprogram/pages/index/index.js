@@ -5,7 +5,12 @@ Page({
   data: {
     currentTab: 0,
     recentNews: [], // 存储前3条动态文章
-    loading: true
+    loading: true,
+    showBackToTop: false, // 控制回到顶部按钮显示
+    backToTopPosition: { // 回到顶部按钮位置
+      right: 30,
+      bottom: 100
+    }
   },
 
   onLoad() {
@@ -99,5 +104,21 @@ Page({
   // 关于我们按钮点击事件 - 使用通用函数
   onAboutTap() {
     navigateToPage("/pages/about/index");
+  },
+
+  // 页面滚动事件
+  onPageScroll(e) {
+    const scrollTop = e.scrollTop;
+    const showThreshold = 500; // 滚动超过500rpx显示按钮
+    
+    this.setData({
+      showBackToTop: scrollTop > showThreshold
+    });
+  },
+
+  // 回到顶部事件处理
+  onBackToTop() {
+    // 组件内部已经处理了滚动逻辑，这里只记录日志
+    console.log('回到顶部按钮被点击');
   }
 });
