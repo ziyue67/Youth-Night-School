@@ -2,8 +2,6 @@
 @import 'index-wxa-auto-dark.wxss'
 
 /* 新闻列表 */
-
-/* 新闻列表 */
 .news-list {
   display: flex;
   flex-direction: column;
