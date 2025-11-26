@@ -1,10 +1,4 @@
 /* 课程页面样式 */
-.container {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  background-color: #f5f5f5;
-}
 
 /* 顶部标题栏 */
 .header {

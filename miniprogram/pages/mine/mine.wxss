@@ -1,9 +1,4 @@
 /* 用户中心页面样式 */
-.container {
-  background-color: #f8f9fa;
-  min-height: 100vh;
-  padding-bottom: 30rpx;
-}
 
 /* 用户信息区域 */
 .user-section {
