@@ -61,14 +61,14 @@
   <!-- 近期动态推荐区 -->
   <view class="activity-section">
     <view class="section-header">
-      <text class="section-title-left">近期精彩</text>
-      <text class="section-more" bindtap="onMoreTap">更多→</text>
+      <text class="section-title-left">✨ 近期精彩</text>
+      <text class="section-more" bindtap="onMoreTap">查看更多 →</text>
     </view>
     
     <!-- 加载状态 -->
     <view wx:if="{{loading}}" class="loading-container">
       <view class="loading-spinner"></view>
-      <text class="loading-text">正在加载动态...</text>
+      <text class="loading-text">正在加载精彩内容...</text>
     </view>
     
     <!-- 横向滚动的动态列表 -->
@@ -81,13 +81,16 @@
         </view>
         <view class="news-image" wx:if="{{item.type === 'wechat'}}">
           <image src="{{item.image}}" mode="aspectFit" class="wechat-logo"></image>
+          <text class="image-label">公众号</text>
         </view>
       </view>
     </scroll-view>
     
     <!-- 空状态 -->
     <view wx:else class="empty-container">
-      <text class="empty-text">暂无动态</text>
+      <image src="/images/icons/customer-service.svg" mode="aspectFit" class="empty-image"></image>
+      <text class="empty-text">暂无精彩动态</text>
+      <text class="empty-subtitle">敬请期待更多内容</text>
     </view>
   </view>
 
