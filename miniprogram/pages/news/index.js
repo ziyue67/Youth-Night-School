@@ -1,4 +1,6 @@
-// 动态页面
+const { callCloudFunction, formatDate, navigateToPage } = require('../../utils/common');
+
+// 动态页面 - 优化后减少冗余
 Page({
   data: {
     newsList: [],
@@ -15,25 +17,19 @@ Page({
     this.loadWechatArticles();
   },
 
-  // 加载微信公众号文章
-  loadWechatArticles: function() {
-    wx.showLoading({
-      title: '加载中...'
-    });
-
-    wx.cloud.callFunction({
-      name: 'getLocalWechatArticles'
-    }).then(res => {
-      wx.hideLoading();
+  // 加载微信公众号文章 - 使用通用云函数调用
+  async loadWechatArticles() {
+    try {
+      const res = await callCloudFunction('getLocalWechatArticles', {}, true, '加载文章中...');
       
       if (res.result && res.result.success) {
         const wechatArticles = res.result.data.map(article => ({
           id: article._id || article.id,
           title: article.title,
-          date: this.formatDate(article.publish_time),
+          date: formatDate(article.publish_time),
           type: "wechat",
           url: article.link,
-          description: article.title, // 使用标题作为描述
+          description: article.title,
           image: "/images/icons/customer-service.svg",
           author: '',
           readCount: 0,
@@ -41,54 +37,22 @@ Page({
         }));
         
         this.setData({
-          wechatArticles: wechatArticles,
+          wechatArticles,
           newsList: [...this.data.newsList, ...wechatArticles],
           loading: false
         });
       } else {
         console.error('获取公众号文章失败:', res.result?.error || '未知错误');
-        this.setData({
-          loading: false
-        });
-        // 如果获取失败，使用默认的文章
         this.setDefaultWechatArticles();
       }
-    }).catch(err => {
-      wx.hideLoading();
+    } catch (err) {
       console.error('云函数调用失败:', err);
-      this.setData({
-        loading: false
-      });
-      // 如果获取失败，使用默认的文章
       this.setDefaultWechatArticles();
-    });
-  },
-
-  // 格式化日期
-  formatDate: function(dateString) {
-    if (!dateString) return '官方资讯';
-    
-    const date = new Date(dateString);
-    if (isNaN(date.getTime())) return '官方资讯';
-    
-    const now = new Date();
-    const diffTime = Math.abs(now - date);
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    
-    if (diffDays === 0) {
-      return '今天';
-    } else if (diffDays === 1) {
-      return '昨天';
-    } else if (diffDays < 7) {
-      return `${diffDays}天前`;
-    } else {
-      return `${date.getMonth() + 1}月${date.getDate()}日`;
     }
   },
 
   // 设置默认的微信公众号文章
   setDefaultWechatArticles: function() {
-    // 不设置默认文章，直接显示空状态
     this.setData({
       wechatArticles: [],
       newsList: [],
@@ -105,17 +69,14 @@ Page({
     this.loadNewsData();
   },
 
-  // 点击新闻项
+  // 点击新闻项 - 使用通用跳转函数
   onNewsTap: function(e) {
     const { item } = e.currentTarget.dataset;
     
     if (item.type === 'wechat') {
-      // 跳转到微信公众号文章
-      wx.navigateTo({
-        url: `/pages/webview/index?url=${encodeURIComponent(item.url)}&title=${encodeURIComponent(item.title)}`
-      });
+      const url = `/pages/webview/index?url=${encodeURIComponent(item.url)}&title=${encodeURIComponent(item.title)}`;
+      navigateToPage(url);
     } else {
-      // 普通新闻处理
       wx.showToast({
         title: '功能开发中',
         icon: 'none'

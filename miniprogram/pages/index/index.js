@@ -1,4 +1,6 @@
-// 首页逻辑 - 紧急修复所有跳转失败
+const { COLLEGES, navigateToPage, storage } = require('../../utils/common');
+
+// 首页逻辑 - 优化后减少冗余
 Page({
   data: {
     currentTab: 0,
@@ -31,25 +33,13 @@ Page({
     console.log("=== 首页加载 ===");
   },
 
-  // 学院卡片点击事件 - 彻底修复跳转映射
+  // 学院卡片点击事件 - 使用通用函数优化
   onCollegeTap(e) {
     const college = e.currentTarget.dataset.college;
-    console.log("=== 点击学院卡片 ===");
-    console.log("学院名称:", college);
+    console.log("=== 点击学院卡片 ===", college);
     
-    // 验证学院名称有效性
-    const validColleges = [
-      '建筑工程学院',
-      '智能制造与电梯学院', 
-      '新能源工程与汽车学院',
-      '信息工程与物联网学院',
-      '经济管理与电商学院',
-      '旅游管理学院',
-      '艺术设计与时尚创意学院',
-      '社会发展与公共教育学院'
-    ];
-    
-    if (!validColleges.includes(college)) {
+    // 使用常量验证学院名称
+    if (!COLLEGES.includes(college)) {
       console.error("❌ 无效的学院名称:", college);
       wx.showToast({
         title: '学院信息错误',
@@ -58,39 +48,22 @@ Page({
       return;
     }
     
-    // 使用navigateTo透传参数；失败再降级为switchTab+存储
-    wx.navigateTo({
-      url: `/pages/courses/index?college=${encodeURIComponent(college)}`,
-      success: () => {
-        console.log("✅ navigateTo跳转成功，学院:", college);
-      },
-      fail: (err2) => {
-        console.warn("navigateTo失败，改用switchTab:", err2);
-        wx.setStorageSync('selectedCollege', college);
-        wx.setStorageSync('collegeTimestamp', Date.now());
-        wx.switchTab({
-          url: '/pages/courses/index'
-        });
-      }
-    });
+    // 使用通用跳转函数
+    const url = `/pages/courses/index?college=${encodeURIComponent(college)}`;
+    navigateToPage(url, 'switchTab:/pages/courses/index');
+    
+    // 存储选择的学院信息
+    storage.set('selectedCollege', college);
+    storage.set('collegeTimestamp', Date.now());
   },
 
-  // 更多按钮点击事件
+  // 更多按钮点击事件 - 使用通用函数
   onMoreTap() {
-    wx.navigateTo({
-      url: "/pages/courses/index",
-      fail: () => {
-        wx.switchTab({
-          url: '/pages/courses/index'
-        });
-      }
-    });
+    navigateToPage("/pages/courses/index", 'switchTab:/pages/courses/index');
   },
 
-  // 关于我们按钮点击事件
+  // 关于我们按钮点击事件 - 使用通用函数
   onAboutTap() {
-    wx.navigateTo({
-      url: "/pages/about/index"
-    });
+    navigateToPage("/pages/about/index");
   }
 });

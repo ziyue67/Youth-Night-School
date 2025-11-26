@@ -1,4 +1,6 @@
-// 个人资料页面
+const { callCloudFunction, handleError, showSuccess, storage } = require('../../utils/common');
+
+// 个人资料页面 - 优化后减少冗余
 Page({
   data: {
     userInfo: null,
@@ -10,14 +12,16 @@ Page({
     this.loadPhoneNumber();
   },
 
-  async loadUserInfo() {
-    const userInfo = wx.getStorageSync('userInfo');
+  // 加载用户信息 - 使用通用存储函数
+  loadUserInfo() {
+    const userInfo = storage.get('userInfo');
     this.setData({ userInfo });
   },
 
-  async loadPhoneNumber() {
+  // 加载手机号 - 使用通用存储函数
+  loadPhoneNumber() {
     try {
-      const phoneNumber = wx.getStorageSync('phoneNumber');
+      const phoneNumber = storage.get('phoneNumber');
       if (phoneNumber) {
         this.setData({ phoneNumber });
       }
@@ -26,6 +30,7 @@ Page({
     }
   },
 
+  // 处理获取手机号 - 使用通用函数
   async handleGetPhoneNumber(e) {
     console.log('getPhoneNumber事件:', e);
     
@@ -34,44 +39,26 @@ Page({
       console.log('获取到手机号code:', code);
       
       try {
-        // 调用云函数获取手机号
-        wx.showLoading({
-          title: '获取手机号中...',
-        });
-        
-        const result = await wx.cloud.callFunction({
-          name: 'getPhoneNumber',
-          data: {
-            code: code
-          }
-        });
-        
-        wx.hideLoading();
+        const result = await callCloudFunction('getPhoneNumber', {
+          code: code
+        }, true, '获取手机号中...');
         
         if (result.result.success) {
           const phoneNumber = result.result.phoneNumber;
           console.log('获取到的手机号:', phoneNumber);
           
-          // 保存手机号到本地缓存
-          wx.setStorageSync('phoneNumber', phoneNumber);
+          // 使用通用存储函数保存手机号
+          storage.set('phoneNumber', phoneNumber);
           
           // 更新页面显示
           this.setData({ phoneNumber });
           
-          wx.showToast({
-            title: '手机号绑定成功',
-            icon: 'success'
-          });
+          showSuccess('手机号绑定成功');
         } else {
           throw new Error(result.result.error || '获取手机号失败');
         }
       } catch (error) {
-        wx.hideLoading();
-        console.error('获取手机号失败:', error);
-        wx.showToast({
-          title: error.message || '获取手机号失败',
-          icon: 'none'
-        });
+        handleError(error, '获取手机号失败');
       }
     } else {
       console.log('用户拒绝授权获取手机号');
