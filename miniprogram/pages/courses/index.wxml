@@ -11,26 +11,26 @@
 
   <view class="content">
     <!-- 左侧学院导航 -->
-    <view class="sidebar">
+    <view class="sidebar" style="width: 227rpx; display: flex; box-sizing: border-box; left: 0rpx; top: 0rpx">
       <view class="nav-item {{currentCollege === '建筑工程学院' ? 'active' : ''}}" 
             bindtap="switchCollege" 
             data-college="建筑工程学院">
-        <text>🏗 建筑工程学院</text>
+        <text>建筑工程学院</text>
       </view>
       <view class="nav-item {{currentCollege === '智能制造与电梯学院' ? 'active' : ''}}" 
             bindtap="switchCollege" 
             data-college="智能制造与电梯学院">
-        <text>🏭 智能制造与电梯学院</text>
+        <text>智能制造与电梯学院</text>
       </view>
       <view class="nav-item {{currentCollege === '新能源工程与汽车学院' ? 'active' : ''}}" 
             bindtap="switchCollege" 
             data-college="新能源工程与汽车学院">
-        <text>🚗 新能源工程与汽车学院</text>
+        <text>新能源工程与汽车学院</text>
       </view>
       <view class="nav-item {{currentCollege === '信息工程与物联网学院' ? 'active' : ''}}" 
             bindtap="switchCollege" 
             data-college="信息工程与物联网学院">
-        <text>💻 信息工程与物联网学院</text>
+        <text>信息工程与物联网学院</text>
       </view>
       <view class="nav-item {{currentCollege === '经济管理与电商学院' ? 'active' : ''}}" 
             bindtap="switchCollege" 
@@ -40,22 +40,22 @@
       <view class="nav-item {{currentCollege === '旅游管理学院' ? 'active' : ''}}" 
             bindtap="switchCollege" 
             data-college="旅游管理学院">
-        <text>✈️ 旅游管理学院</text>
+        <text>旅游管理学院</text>
       </view>
       <view class="nav-item {{currentCollege === '艺术设计与时尚创意学院' ? 'active' : ''}}" 
             bindtap="switchCollege" 
             data-college="艺术设计与时尚创意学院">
-        <text>🎨 艺术设计与时尚创意学院</text>
+        <text>艺术设计与时尚创意学院</text>
       </view>
       <view class="nav-item {{currentCollege === '社会发展与公共教育学院' ? 'active' : ''}}" 
             bindtap="switchCollege" 
             data-college="社会发展与公共教育学院">
-        <text>👥 社会发展与公共教育学院</text>
+        <text>社会发展与公共教育学院</text>
       </view>
     </view>
 
     <!-- 右侧课程内容 -->
-    <view class="main-content">
+    <view class="main-content" style="width: 504rpx; display: block; box-sizing: border-box; left: 0rpx; top: 0rpx">
       <!-- 搜索框 -->
       <view class="search-section">
         <view class="search-box">
